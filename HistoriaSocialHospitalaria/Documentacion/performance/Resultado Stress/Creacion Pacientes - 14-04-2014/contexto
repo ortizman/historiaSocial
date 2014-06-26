@@ -1,0 +1,14 @@
+Se probo la creacion de pacientes en la HS. 
+Inicialmente estaba con 23.000 pacientes.
+La carga se hizo con Jmeter 2.11. 
+Inicio de la prueba: 01:33am 14-04-14
+Cant. hilos: 4
+vueltas: 25000
+Temporizador: Desviacion: 1s, Desplazamiento por retardo: 300ms
+
+
+Fin de la prueba:08:33am - 14.
+Pacientes: 122.000
+Errores: 0.00%
+Los resultados de memoria, cpu y tiempos se encuentran en graficos
+
