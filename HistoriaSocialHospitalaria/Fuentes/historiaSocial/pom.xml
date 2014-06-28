@@ -16,13 +16,21 @@
 	<build>
 		<finalName>HistoriaSocial</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
+					<version>2.17</version>
+					<configuration>
+						<forkCount>1</forkCount>
+						<reuseForks>false</reuseForks>
+						<argLine>-Xmx256m -Xms128m</argLine>
+						<systemPropertyVariables>
+							<databaseSchema>MY_TEST_SCHEMA_${surefire.forkNumber}</databaseSchema>
+						</systemPropertyVariables>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -32,7 +40,7 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-				
+
 		<plugins>
 
 			<plugin>
@@ -55,15 +63,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.16</version>
 				<configuration>
-			        <forkMode>always</forkMode>
-			    </configuration>
+					<forkCount>3</forkCount>
+					<reuseForks>false</reuseForks>
+					<argLine>-Xmx256m -Xms128m</argLine>
+					<systemPropertyVariables>
+						<databaseSchema>MY_TEST_SCHEMA_${surefire.forkNumber}</databaseSchema>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.3</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -108,7 +119,7 @@
 				<!-- <filtering>true</filtering> -->
 			</testResource>
 		</testResources>
-	</build>	
+	</build>
 
 	<dependencies>
 
@@ -186,7 +197,7 @@
 			<artifactId>struts2-convention-plugin</artifactId>
 			<version>${struts.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-spring-plugin</artifactId>
@@ -194,11 +205,11 @@
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
-			        <artifactId>spring-beans</artifactId>
+					<artifactId>spring-beans</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.springframework</groupId>
-			        <artifactId>spring-core</artifactId>
+					<artifactId>spring-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -215,14 +226,14 @@
 			<scope>provided</scope>
 		</dependency>
 
-	<dependency>
-		<groupId>javax.servlet.jsp</groupId>
-		<artifactId>jsp-api</artifactId>
-		<version>2.2</version>
-		<type>jar</type>
-		<scope>test</scope>
-	</dependency>
-		
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -283,7 +294,7 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-		
+
 		<!-- <dependency> -->
 		<!-- <groupId>org.springframework</groupId> -->
 		<!-- <artifactId>spring-mock</artifactId> -->
@@ -331,7 +342,7 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-	            		
+
 
 		<dependency>
 			<groupId>org.apache.struts</groupId>
@@ -344,36 +355,36 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-junit-plugin</artifactId>
 			<version>${struts.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 			<exclusions>
-			    <exclusion>
-			        <groupId>org.slf4j</groupId>
-			        <artifactId>dom4j</artifactId>
-			    </exclusion>
-		    </exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 			<exclusions>
-			    <exclusion>
-			        <groupId>dom4j</groupId>
-			        <artifactId>slf4j-api</artifactId>
-			    </exclusion>
-		    </exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -381,9 +392,9 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-ehcache</artifactId>
-		    <version>${hibernate.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<dependency>
@@ -394,9 +405,9 @@
 
 
 		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-api</artifactId>
-		  <version>1.7.5</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
