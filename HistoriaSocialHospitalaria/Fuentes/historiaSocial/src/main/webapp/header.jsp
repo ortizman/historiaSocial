@@ -53,17 +53,12 @@ if(!"false".equals(conMenu)){
 			<%  
 			   if (esDirector){ %>
 			   <li class="menuElem <%if(comp(sp, "/pages/abmProfesionales.jsp") || comp(sp, "/pages/profesional/")){ %> menuSelected <%}%>"><a href="abmProfesionales.action">Profesionales</a></li>
-<%-- 			   <li class="menuElem <%if(sp.compareToIgnoreCase("/abmTipoProblematicas.jsp")==0){ %> menuSelected <%}%>"><a href="abmTipoProblematicas.action">Tipo de Problem&#225;ticas</a></li> --%>
-<%-- 			   <li class="menuElem <%if(sp.compareToIgnoreCase("/abmEspecialidades.jsp")==0){ %> menuSelected <%}%>"><a href="abmEspecialidades.action">Especialidades</a></li> --%>
-			   <li class="menuElem <%if(sp.compareToIgnoreCase("/listado.jsp")==0){ %> menuSelected <%}%>"><a href="listado.action">Estad&#237;sticas</a></li>
+			   <li class="menuElem <%if(comp(sp, "/listado.jsp") || comp(sp, "/estadisticas.jsp") ){ %> menuSelected <%}%>"><a href="listado.action">Estad&#237;sticas</a></li>
 			   
-			<% } %>
-<%-- 			<li class="menuElem <%if(request.getServletPath().compareToIgnoreCase("/formModificarUsuarioConectado.jsp")==0){ %> menuSelected <%}%>"><a href="formModificarUsuarioConectado.action"><s:property value="#session.user"/></a></li> --%>
-			
-			<%  
-			   if (esDirector){ %>
+			<% } 
+				if (esDirector){ %>
 			<li class="menuElem" style="margin-left: 2%" id="configuracion"><a href="#">Configuraci&oacute;n</a></li>
-			<% } %>
+				<% } %>
 		</ul>
 	</div>
 	<div class="subMenuP configuracionSubMenu" style="display: none">

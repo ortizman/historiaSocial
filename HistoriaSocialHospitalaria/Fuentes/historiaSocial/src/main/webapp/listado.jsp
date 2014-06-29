@@ -35,25 +35,25 @@ form label {
 			filtro = document.getElementById("filtrofechaprof");
 			filtro1 = document.getElementById("filtrofecha");
 			filtro2 = document.getElementById("filtrofechapaciente");
-// 			selectpac = document.getElementById("paciente");
+			selectpac = document.getElementById("paciente");
 			selectprof = document.getElementById("profesional");
 			inicio = document.getElementById("inicio");
 			fin = document.getElementById("fin");
 			inicio.removeAttribute("disabled");
 			fin.removeAttribute("disabled");
 			if (filtro.checked) {
-// 				selectpac.selectedIndex = "Seleccione un paciente";
-// 				selectpac.setAttribute("disabled", "true");
+				selectpac.selectedIndex = "Seleccione un paciente";
+				selectpac.setAttribute("disabled", "true");
 				selectprof.removeAttribute("disabled");
 			} else {
 				if (filtro2.checked) {
 					selectprof.selectedIndex = "Seleccione un profesional";
 					selectprof.setAttribute("disabled", "true");
-// 					selectpac.removeAttribute("disabled");
+					selectpac.removeAttribute("disabled");
 				} else {
-// 					selectpac.setAttribute("disabled", "true");
+					selectpac.setAttribute("disabled", "true");
 					selectprof.setAttribute("disabled", "true");
-// 					selectpac.selectedIndex = "Seleccione un paciente";
+					selectpac.selectedIndex = "Seleccione un paciente";
 					selectprof.selectedIndex = "Seleccione un profesional";
 					if (!filtro1.checked) {
 						inicio.setAttribute("disabled", "true");
@@ -73,37 +73,38 @@ form label {
 		} else {
 	%>
 	<jsp:include page="header.jsp" />
+
+	<jsp:include page="subMenu.jsp">
+		<jsp:param value="estadisticas" name="abm" />
+	</jsp:include>
+	
 	<div id="pagina">
 		<div id="cuerpo">
-			<a href="estadisticas.jsp"> Ver Estad&iacute;sticas</a>
 			<s:form id="formu" action="listado.action">
 				<s:radio id="filtro"
 					list="#{'fecha':'Fecha','fechaprof':'Fecha y Profesional','fechapaciente':'Fecha y Paciente'}"
 					onchange="disable()" name="filtro" label="Filtrar por"></s:radio>
 
-				<tr>
-					<td><label for="query">Paciente: </label></td>
-					<td><input type="text" name="paciente" id="query" size="35" /></td>
-				</tr>
 				<s:select list="profesionales" disabled="false" headerKey="-1"
 					headerValue="Seleccione un profesional" value="profesional"
 					listKey="id" listValue="nombreCompleto" name="profesional"
 					label="Profesional" id="profesional">
 				</s:select>
 				
-				<s:select list="pacientes" disabled="false" headerKey="-1"
-					headerValue="Seleccione un paciente" value="paciente" listKey="id"
-					listValue="nombreCompleto" name="paciente" label="Paciente"
-					id="paciente">
-				</s:select>
+				<tr>
+					<td><label title="Introdusca las priemas letras del apellidos del paciente" for="query">Paciente: </label></td>
+					<td><input title="Introdusca las priemas letras del apellidos del paciente" type="text" name="query" id="paciente" size="35" /></td>
+					
+				</tr>
+				<input name="paciente" type="hidden" id="pacienteId" value="${paciente}"/>
 				
 				<sj:datepicker id="inicio" name="inicio" displayFormat="dd/mm/yy"
 					maxDate="today" label="Fecha Inicio "
-					buttonImage="/historiaSocial/images/16x16/Calendar.png"
+					buttonImage="images/16x16/Calendar.png"
 					buttonImageOnly="true" />
 				<sj:datepicker id="fin" name="fin" displayFormat="dd/mm/yy"
 					maxDate="+1d" label="Fecha Fin "
-					buttonImage="/historiaSocial/images/16x16/Calendar.png"
+					buttonImage="images/16x16/Calendar.png"
 					buttonImageOnly="true" />
 
 				<s:submit value="Filtrar" />
@@ -175,15 +176,14 @@ form label {
 
 			</div>
 			<div id="botonEstadisticas"></div>
-			<script type="text/javascript" src="script/jquery.autocomplete.js"></script>
+			<script type="text/javascript" src="script/jquery.autocomplete.min.js"></script>
 			<script>
 				disable();
-				$('#query').autocomplete(
+				$('#paciente').autocomplete(
 						{
 							serviceUrl : 'pacienteAutoComplete',
 							onSelect : function(suggestion){
-								alert('You selected: ' + suggestion.value
-										+ ', ' + suggestion.data);
+								$("#pacienteId").val(suggestion.data);
 							},
 
 							minChars: 3,

@@ -23,7 +23,7 @@ public class PacienteDAOHibernateJPA extends GenericDAOHibernateJPA<Paciente> im
 	final private static String	provincia		= "Buenos Aires";
 	final private static String	ciudad			= "La Plata";
 	private static int			firstDefault	= 0;
-	private static int			sizePageDefault	= 100;
+	private static int			sizeResultDefault	= 100;
 
 	private PersonaDAO			personaDAO;
 
@@ -281,7 +281,7 @@ public class PacienteDAOHibernateJPA extends GenericDAOHibernateJPA<Paciente> im
 		searchPaciente.setParameter("bool", true);
 		searchPaciente.setParameter("text", term);
 		searchPaciente.setFirstResult(PacienteDAOHibernateJPA.firstDefault);
-		searchPaciente.setMaxResults(PacienteDAOHibernateJPA.sizePageDefault);
+		searchPaciente.setMaxResults(PacienteDAOHibernateJPA.sizeResultDefault);
 		
 		return searchPaciente.getResultList();
 	}

@@ -44,6 +44,15 @@ if(esDirector != null){
 		</div>
 	</div>	
 <%
-	}	
+	}
+	
+	if(abm.equalsIgnoreCase("estadisticas")){ %>
+	<div class="subMenuP">
+		<div class="menuBotP">
+			<div class="menuElemP <% if(comp(sp, "estadisticas.jsp")){ %> menuSelectedP <%}%>"><a href="estadisticas.jsp">Ver Estadísticas</a></div>
+		</div>
+	</div>	
+<%
+	}
 }
 %>

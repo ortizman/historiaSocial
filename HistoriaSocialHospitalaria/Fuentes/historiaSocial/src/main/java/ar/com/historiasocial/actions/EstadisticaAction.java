@@ -30,7 +30,7 @@ public class EstadisticaAction extends ListJQGridAction {
 	private Date				inicio;
 	private Date				fin;
 	private int					profesional;
-	private int					paciente;
+	private Integer				paciente;
 	private String				filtro;
 	private int					cantPags;
 	private Integer				pagActual;
@@ -88,11 +88,11 @@ public class EstadisticaAction extends ListJQGridAction {
 		this.profesional = profesional;
 	}
 
-	public int getPaciente(){
+	public Integer getPaciente(){
 		return paciente;
 	}
 
-	public void setPaciente(int paciente){
+	public void setPaciente(Integer paciente){
 		this.paciente = paciente;
 	}
 
@@ -123,7 +123,7 @@ public class EstadisticaAction extends ListJQGridAction {
 	@Override
 	public String preparar() throws Exception{
 		
-//		this.setProfesionales(getProfesionalDAO().retrieveAll());
+		this.setProfesionales(getProfesionalDAO().retrieveAll());
 //		this.setPacientes(getPacienteDAO().retrieveAll());
 		
 		return super.preparar();
