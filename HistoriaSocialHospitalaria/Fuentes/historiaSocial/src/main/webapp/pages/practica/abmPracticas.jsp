@@ -89,7 +89,7 @@ margin-top: 4%;
 								formIds="pacienteid"
 								gridModel="practicas"
 								rowList="5,10,15,20, 50"
-								rowNum="5"
+								rowNum="10"
 								rownumbers="false"
 								editurl="%{editurl}"
 								navigator="false"

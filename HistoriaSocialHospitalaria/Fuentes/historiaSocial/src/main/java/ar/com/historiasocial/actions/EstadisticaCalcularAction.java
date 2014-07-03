@@ -94,6 +94,7 @@ public class EstadisticaCalcularAction extends ActionSupport {
 				List<String> r = new ArrayList<String>();
 				while (it.hasNext()) {
 					TipoDePractica tp = it.next();
+//					String cod = StringUtils.substring(tp.getCodigo(), 0, 45);
 					String cod = tp.getCodigo();
 					Integer cant = this.contarPras(tp.getCodigo(), pt);
 					Integer porcentaje = (cant * 100) / cantPracticas;

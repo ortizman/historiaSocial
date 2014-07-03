@@ -3,6 +3,7 @@ package ar.com.historiasocial.util;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +33,7 @@ public class GeocodingService {
 
 	// URL prefix to the geocoder
 	private static final String	GEOCODER_REQUEST_PREFIX_FOR_XML	= "http://maps.google.com/maps/api/geocode/xml";
+	private static final String	GEOCODER_REQUEST_MAPQUEST	= "http://geocoder.cit.api.here.com/6.2/geocode.xml";
 
 	/**
 	 * Constructor por defecto privado
@@ -110,6 +112,68 @@ public class GeocodingService {
 			}
 		}
 
+		return new GeoCord(lat, lng);
+	}
+	
+	public static GeoCord getGeocodingForIntersection(String calle1, String calle2, String ciudad, String provincia){
+		Double lat = -34.921439;
+		Double lng = -57.954541;
+
+		if ((StringUtils.isEmpty(calle1) || StringUtils.isEmpty(calle2))) { return new GeoCord(lat, lng); }
+		
+		if (StringUtils.isEmpty(ciudad)) {
+			ciudad = "La%20Plata";
+		}
+
+		if (StringUtils.isEmpty(provincia)) {
+			provincia = "Buenos%20Aires";
+		}
+		
+		URLConnection conn = null;
+		
+		
+		try {
+			String intersection = "?city="+URLEncoder.encode(ciudad, "UTF-8")+","+URLEncoder.encode(provincia, "UTF-8")+"&street0="+ URLEncoder.encode(calle1, "UTF-8")+"&street1="+URLEncoder.encode(calle2, "UTF-8")+"&app_id=rME43ZBwYaaqN91WA0vo&app_code=zxMKM0o0f5RIZ12V2inGPw&gen=5";
+			URL url = new URL(GEOCODER_REQUEST_MAPQUEST +  intersection);
+
+			conn = url.openConnection();
+			conn.connect();
+			InputSource geocoderResultInputSource = new InputSource(conn.getInputStream());
+
+			// read result and parse into XML Document
+			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(geocoderResultInputSource);
+
+			// prepare XPath
+			XPath xpath = XPathFactory.newInstance().newXPath();
+
+			// extract the result
+			NodeList resultNodeList = null;
+
+			// c) extract the coordinates of the first result
+			resultNodeList = (NodeList) xpath.evaluate("/*/Response/View/Result/Location/DisplayPosition/*", document, XPathConstants.NODESET);
+			
+			for (int i = 0; i < resultNodeList.getLength(); ++i) {
+				Node node = resultNodeList.item(i);
+				if ("Latitude".equals(node.getNodeName())) {
+					lat = Double.parseDouble(node.getTextContent());
+				}
+				if ("Longitude".equals(node.getNodeName())) {
+					lng = Double.parseDouble(node.getTextContent());
+				}
+			}
+			
+
+		} catch (Exception e) {
+			LOGGER.error("Error Inesperado al intentar obtener las coordenadas de la interseccion. calle: " + calle1 + " y calle: " + calle2 + ", ciudad: "
+					+ ciudad + ", provincia: " + provincia, e);
+			LOGGER.warn("Se devuelve las corrdenadas del centro geografico de la ciudad de la plata");
+			return new GeoCord(lat, lng);
+		} finally {
+			if (conn != null) {
+				((HttpURLConnection)conn).disconnect();
+			}
+		}
+		
 		return new GeoCord(lat, lng);
 	}
 

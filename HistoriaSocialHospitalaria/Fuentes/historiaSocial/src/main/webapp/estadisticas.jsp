@@ -14,7 +14,20 @@
 form label {
 	float: none;
 }
+
+#grafico{
+	margin-top: 3%;
+}
+
+.pieLabel div{
+	width: 200px;
+}
+
+.legend table {
+	width: 35%;
+}
 </style>
+
 </head>
 <body>
 	<%
@@ -45,8 +58,8 @@ form label {
 					</s:form>
 				</div>
 				<div id="grafico">
-					<sjc:chart id="chartPie" cssStyle="width: 600px; height: 400px;"
-						pie="true" pieLabel="true" onHoverTopics="chartHover">
+					<sjc:chart id="chartPie" cssStyle="width: 100%; height: 500px;"
+						pie="true" pieLabel="true" onHoverTopics="chartHover" onCompleteTopics="complete">
 						<s:iterator value="porcentajes" status="stat">
 							<sjc:chartData id="%{key}" label="%{key}" data="%{value}" />
 						</s:iterator>

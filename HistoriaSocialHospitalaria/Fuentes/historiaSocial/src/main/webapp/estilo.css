@@ -725,3 +725,18 @@ select { background-color: white; }
     font-family:Garamond;
     font-size: 14px;
  }
+ 
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: pre-line; overflow: visible; margin: 5px; font-size: 14px; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: inherit; color: #3399FF; }
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+	border: 1px #fcefa1;
+	background: #C7BDB9 50% 50% repeat-x;
+} 
+
+#pagina .ui-state-highlight {
+	border: 1px #fcefa1;
+	background: #C7BDB9 50% 50% repeat-x;
+}

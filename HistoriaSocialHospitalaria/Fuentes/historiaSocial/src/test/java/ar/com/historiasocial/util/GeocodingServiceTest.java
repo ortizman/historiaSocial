@@ -44,6 +44,33 @@ public class GeocodingServiceTest {
 
 	}
 	
+	@Test
+	public final void testGetGeocodingForInstersection() {
+		// Hospital de ninhos - La Plata
+		GeoCord geocord = GeocodingService.getGeocodingForIntersection("65", "12", "La Plata", "Buenos Aires");
+		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
+		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
+
+	}
+	
+	@Test
+	public final void testGetGeocodingForInstersectionSinProv() {
+		// Hospital de ninhos - La Plata
+		GeoCord geocord = GeocodingService.getGeocodingForIntersection("65", "12", "La Plata", "");
+		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
+		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
+
+	}
+	
+	@Test
+	public final void testGetGeocodingForInstersectionVariante() {
+		// Hospital de ninhos - La Plata
+		GeoCord geocord = GeocodingService.getGeocodingForIntersection("Calle 65", "12", "La Plata", "");
+		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
+		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
+
+	}
+	
 	/**
 	 * Test method for
 	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocodingForAddress(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}

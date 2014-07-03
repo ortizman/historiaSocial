@@ -101,7 +101,7 @@ function renderActions(cellvalue, options, rowObject) {
 								<sjg:gridColumn name="apellido" index="apellido" title="Apellido" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="matricula" index="matricula" title="Matricula" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="servicio.id" jsonmap="servicio" index="servicio.servicio" title="Servicio" sortable="true" editable="true"  edittype="select" editoptions="{dataUrl:'%{respServ}'}" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="esDirector" index="esDirector" title="Es Director"  edittype="select" editoptions="{value:{true:'Si', false:'No'}}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="esDirector" index="esDirector" title="Es Director"  edittype="select" formatter="select" editoptions="{value:{true:'Si', false:'No'}}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="user" index="user" title="Nombre de Usuario" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="pass" hidden="true" editrules="{edithidden:true}" edittype="password" title="Contraseña" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="actions" id="id" width="" editrules="{edithidden:true}" dataType="html" surl=""  index="" title="Acciones" formoptions="{rowpos: 5, colpos: 3}" formatter="renderActions"/>

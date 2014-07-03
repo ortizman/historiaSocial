@@ -39,10 +39,10 @@ $(function(){
 });
 </script>
 
-<c:if test="${!empty idPaciente}">
+<c:if test="${tratamientoNoActivo && !empty idPaciente}">
 <script type="text/javascript">
 $(function(){
-	$( "#dialog" ).dialog({
+	$("#dialog").dialog({
         modal: true,
         resizable: false,
         title:"Mensaje de notificaci&oacute;n",
@@ -66,6 +66,15 @@ $(function(){
 });
 </script>
 </c:if>
+
+<style type="text/css">
+
+form label {
+	width: 17%;
+	float: left;
+}
+
+</style>
 
 </head>
 <body>
@@ -111,16 +120,30 @@ $(function(){
 					listKey="id"
        				listValue="nombreCompleto" 
 					value='%{practica.profesional.{id}}'/></p>
-				<p><s:select 
-					label="Paciente" 
-					id ="paciente"
-					list="pacientes" 
-					name="idPaciente" 
-					listKey="id"
-       				listValue="nombreCompleto" 
-					value='%{practica.historiaSocial.paciente.{id}}'/></p>					
-				<p>Fecha de Carga: &nbsp;&nbsp;&nbsp;<input name="practica.fechaCarga" type="text" value="<s:property value="practica.fechaCarga"/>" class="datepicker" />
-				<p>Fecha de Pr&aacute;ctica: &nbsp;&nbsp;&nbsp;&nbsp;<input maxlength="250" name="practica.fechaPractica" value="<s:property value="practica.fechaPractica"/>" type="text" class="datepicker" /></p>
+				<p>
+				
+					<label title="Introdusca las priemas letras del apellidos del paciente" for="query">Paciente: </label>
+					<input title="Introdusca las priemas letras del apellidos del paciente" type="text" name="query" id="paciente" size="35" value="${nombrePaciente}"/>
+					
+				<input name="idPaciente" type="hidden" id="pacienteId" value="${idPaciente}"/>
+				
+<%-- 				<s:select  --%>
+<%-- 					label="Paciente"  --%>
+<%-- 					id ="paciente" --%>
+<%-- 					list="pacientes"  --%>
+<%-- 					name="idPaciente"  --%>
+<%-- 					listKey="id" --%>
+<%--        				listValue="nombreCompleto"  --%>
+<%-- 					value='%{practica.historiaSocial.paciente.{id}}'/> --%>
+				
+				</p>					
+				<p>
+				<label for="practica.fechaCarga">Fecha de Carga:</label>
+				<input name="practica.fechaCarga" type="text" value="<s:property value="practica.fechaCarga"/>" class="datepicker" />
+				
+				<p>
+				<label for="practica.fechaPractica">Fecha de Pr&aacute;ctica:</label>
+				<input maxlength="250" name="practica.fechaPractica" value="<s:property value="practica.fechaPractica"/>" type="text" class="datepicker" /></p>
 				<p><s:select 
 					label="Tipo de Práctica" 
 					list="tipoDePracticas" 
@@ -154,6 +177,7 @@ $(function(){
 			
 			</div>
 			 
+			<script type="text/javascript" src="script/jquery.autocomplete.min.js"></script>
 			<script>
 			$( "#tabs" ).tabs();
 			$(".datepicker").datepicker({
@@ -161,16 +185,30 @@ $(function(){
 				changeMonth: true,
 				changeYear: true,
 				showOn: 'button',
-				buttonImage: '<%=request.getContextPath() %>/images/16x16/Calendar.png',
+				buttonImage: 'images/16x16/Calendar.png',
 				firstDay: 1,
 			});
 			$(".datepicker").each(function( index ) {
 				  $(this).datepicker("setDate", $(this).val());
 			});
 			$(".datepicker").datepicker($.datepicker.regional['es']); 
+
+			$('#paciente').autocomplete({
+						serviceUrl : 'pacienteAutoComplete',
+						onSelect : function(suggestion){
+							$("#pacienteId").val(suggestion.data);
+						},
+
+						autoSelectFirst: true,
+						
+						minChars: 3,
+
+						deferRequestBy: 300
+					
+			});
 			
 			</script>
-    		
+			
     	<jsp:include page="../../footer.jsp"/>		
     	</div>
 	

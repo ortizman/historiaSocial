@@ -8,10 +8,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link href="estilo.css" rel="StyleSheet" type="text/css" id="css"/>
 <script type="text/javascript" src="script/script.js"></script>
 <s:url var="ctx" value="/" />
 <sj:head locale="es" jqueryui="true" jquerytheme="mytheme" customBasepath="%{ctx}template/themes"/>
+<link href="estilo.css" rel="StyleSheet" type="text/css" id="css"/>
 <script type="text/javascript"> 
 $.struts2_jquery.require([ 
 "struts/js/base/jquery.ui.widget.min.js", 

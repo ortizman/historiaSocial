@@ -232,8 +232,9 @@ String user = (String)session.getAttribute("user");
 								gridModel="personas"
 								rowList="5,10,15,20"
 								rowNum="5"
-								rownumbers="true"
+								rownumbers="false"
 								autowidth="true"
+								
 								
 								editurl="%{editurl}"
 								navigator="true"
@@ -257,7 +258,7 @@ String user = (String)session.getAttribute("user");
 								<sjg:gridColumn name="nacionalidad" index="nacionalidad" title="Nacionalidad" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="educacion" index="educacion" title="Educacion" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="edad" index="edad" title="Edad" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="convive" index="convive" title="Convive" hidden="false" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="convive" index="convive" title="Convive" hidden="false" editrules="{edithidden:true}" edittype="select" formatter="select" editoptions="{value:{true:'Si', false:'No'}}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="ingresos" index="ingresos" title="Ingresos" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="estadoCivil" index="estadoCivil" title="Estado Civil" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="ocupacion" index="ocupacion" title="Ocupacion" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>								

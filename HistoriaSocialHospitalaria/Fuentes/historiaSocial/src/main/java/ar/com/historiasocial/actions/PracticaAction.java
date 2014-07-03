@@ -48,6 +48,8 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 	private List<TipoDePractica>		tipoDePracticas;
 	private List<Paciente>				pacientes;
 	private String							mensaje;
+	private String						nombrePaciente;
+	private Boolean						tratamientoNoActivo = false;
 	private String							oper				= "";
 
 	private static final Logger				LOGGER				= Logger.getLogger(PracticaAction.class);
@@ -58,7 +60,7 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 		this.setPractica(practica);
 		this.setOper("create");
 		profesionales = getProfesionalDAO().retrieveAll();
-		pacientes = getPacienteDAO().retrieveAll();
+//		pacientes = getPacienteDAO().retrieveAll();
 		tipoDePracticas = getTipoDePracticaDAO().retrieveAll();
 		problematicas = getTipoDeProblematicaDAO().retrieveAll();
 		return SUCCESS;
@@ -67,11 +69,15 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 	public String visualizarPractica() throws HSControllerException{
 		Long practicaId = this.getIdPractica();
 		Practica p = getPracticaDAO().retrieveById(practicaId);
+		Long idPac = p.getHistoriaSocial().getPaciente().getId();		
+		Paciente paciente = getPacienteDAO().retrieveById(idPac);
+		this.setNombrePaciente(paciente.getNombreCompleto() + ". DNI: " + paciente.getDocumento());
+		this.setIdPaciente(idPac);
+		
 		profesionales = getProfesionalDAO().retrieveAll();
-		pacientes = getPacienteDAO().retrieveAll();
+//		pacientes = getPacienteDAO().retrieveAll();
 		tipoDePracticas = getTipoDePracticaDAO().retrieveAll();
 		problematicas = getTipoDeProblematicaDAO().retrieveAll();
-		if (p == null) { return ERROR; }
 
 		this.setOper("view");
 
@@ -83,10 +89,13 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 		Long practicaId = this.getIdPractica();
 		Practica p = getPracticaDAO().retrieveById(practicaId);
 		profesionales = getProfesionalDAO().retrieveAll();
-		pacientes = getPacienteDAO().retrieveAll();
+//		pacientes = getPacienteDAO().retrieveAll();
+		Long idPac = p.getHistoriaSocial().getPaciente().getId();
+		Paciente paciente = getPacienteDAO().retrieveById(idPac);
+		this.setNombrePaciente(paciente.getNombreCompleto() + ". DNI: " + paciente.getDocumento());
+		this.setIdPaciente(idPac);
 		tipoDePracticas = getTipoDePracticaDAO().retrieveAll();
 		problematicas = getTipoDeProblematicaDAO().retrieveAll();
-		if (p == null) { return ERROR; }
 		this.setPractica(p);
 		this.setOper("edit");
 		return SUCCESS;
@@ -99,6 +108,7 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 		this.setIdPaciente(null);
 
 		Long id = Long.valueOf(ServletActionContext.getRequest().getParameter("idPaciente"));
+		this.setIdPaciente(id);
 		Paciente paciente = getPacienteDAO().paciente(id);
 
 		if (paciente == null) {
@@ -119,6 +129,7 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 
 		} catch (NoExisteTratamientoActivoException e) {
 			LOGGER.error("Error al intentar persistir la practica", e);
+			this.setTratamientoNoActivo(true);
 			this.setIdPaciente(id);
 		} catch (Exception e) {
 			LOGGER.error("Error al intentar persistir la practica", e);
@@ -126,7 +137,7 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 		}
 
 		profesionales = getProfesionalDAO().retrieveAll();
-		pacientes = getPacienteDAO().retrieveAll();
+//		pacientes = getPacienteDAO().retrieveAll();
 		tipoDePracticas = getTipoDePracticaDAO().retrieveAll();
 		problematicas = getTipoDeProblematicaDAO().retrieveAll();
 		Practica p = new Practica();
@@ -343,6 +354,22 @@ public class PracticaAction extends ActionSupport implements ModelDriven<Practic
 	 */
 	public void setTipoDePracticaDAO(GenericDAO<TipoDePractica> tipoDePracticaDAO){
 		this.tipoDePracticaDAO = tipoDePracticaDAO;
+	}
+
+	public Boolean getTratamientoNoActivo() {
+		return tratamientoNoActivo;
+	}
+
+	public void setTratamientoNoActivo(Boolean tratamientoActivo) {
+		this.tratamientoNoActivo = tratamientoActivo;
+	}
+
+	public String getNombrePaciente() {
+		return nombrePaciente;
+	}
+
+	public void setNombrePaciente(String nombrePaciente) {
+		this.nombrePaciente = nombrePaciente;
 	}
 
 }

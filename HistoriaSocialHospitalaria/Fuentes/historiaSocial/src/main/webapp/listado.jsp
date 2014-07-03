@@ -21,12 +21,6 @@
 form label {
 	float: none;
 }
-
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-.autocomplete-suggestion { padding: 2px 5px; white-space: pre-line; overflow: visible; margin: 5px; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-
 </style>
 </head>
 <body>
@@ -185,6 +179,8 @@ form label {
 							onSelect : function(suggestion){
 								$("#pacienteId").val(suggestion.data);
 							},
+							
+							autoSelectFirst: true,
 
 							minChars: 3,
 
