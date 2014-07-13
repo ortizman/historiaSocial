@@ -54,11 +54,21 @@ public class PacienteDAOHibernateJPA extends GenericDAOHibernateJPA<Paciente> im
 			locat = new Location();
 		}
 
-		if ("".equalsIgnoreCase(locat.getProvince()) || "".equalsIgnoreCase(locat.getCity())) {
-			geocord = GeocodingService.getGeocodingForAddress(locat.getStreet(), locat.getNumber(), ciudad, provincia);
+		String inter = "";
+		if(persona.getDomicilio() != null){
+			if(StringUtils.isNotEmpty(persona.getDomicilio().getCalleX())){
+				inter = persona.getDomicilio().getCalleX();
+			} else if(StringUtils.isNotEmpty(persona.getDomicilio().getCalleY())){
+				inter = persona.getDomicilio().getCalleY();
+			}
 		}
 
-		geocord = GeocodingService.getGeocodingForAddress(locat.getStreet(), locat.getNumber(), locat.getCity(), locat.getProvince());
+		if ("".equalsIgnoreCase(locat.getProvince()) || "".equalsIgnoreCase(locat.getCity())) {
+			geocord = GeocodingService.getGeocoding(locat.getStreet(), locat.getNumber(), inter, ciudad, provincia);
+		}
+
+		geocord = GeocodingService.getGeocoding(locat.getStreet(), locat.getNumber(), inter, locat.getCity(), locat.getProvince());
+		
 		Location location = new Location(locat.getProvince(), "???", locat.getCity(), locat.getStreet(), locat.getNumber(), geocord.getLatitud(),
 				geocord.getLongitud(), persona, null);
 		persona.setLocation(location);

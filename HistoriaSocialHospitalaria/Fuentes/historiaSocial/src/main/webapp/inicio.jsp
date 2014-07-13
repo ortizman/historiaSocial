@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -24,7 +23,7 @@
 			
 			
 			<div id="cuerpo">
-				<div id="bienvenido"><h1>Bienvenido <s:property value="#session.profesionalLogin.nombre"/></h1>
+				<div id="bienvenido"><h1><s:text name="home.welcome" /> <s:property value="#session.profesionalLogin.nombre"/></h1>
 				<img src="images/ludovica_sola.gif"/></div>
 			</div>
 			<jsp:include page="footer.jsp"/>

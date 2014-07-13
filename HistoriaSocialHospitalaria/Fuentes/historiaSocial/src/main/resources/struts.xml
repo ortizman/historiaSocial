@@ -3,7 +3,6 @@
 <struts>
 
 	<constant name="struts.convention.result.path" value="/" /> <!-- Esta constante la seteo para que los el plugin de junit no logue errores -->
-
 	<package name="default" namespace="/"
 		extends="struts-default, json-default">
 

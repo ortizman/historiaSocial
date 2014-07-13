@@ -36,7 +36,7 @@ public class InstitucionDAOHibernateJPA extends GenericDAOHibernateJPA<Instituci
 	
 
 	private void setGeocodingLocationInstitucion(Location location) {
-		GeoCord geoCord = GeocodingService.getGeocodingForAddress(location.getStreet(), location.getNumber(), location.getCity(), location.getProvince());
+		GeoCord geoCord = GeocodingService.getGeocoding(location.getStreet(), location.getNumber(), "", location.getCity(), location.getProvince());
 		location.setLatitude(geoCord.getLatitud());
 		location.setLongitude(geoCord.getLongitud());
 	}

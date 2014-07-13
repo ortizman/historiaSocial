@@ -31,9 +31,12 @@ public class GeocodingService {
 
 	private static final Logger	LOGGER							= Logger.getLogger(GeocodingService.class);
 
-	// URL prefix to the geocoder
+	//URL prefix to the geocoder
 	private static final String	GEOCODER_REQUEST_PREFIX_FOR_XML	= "http://maps.google.com/maps/api/geocode/xml";
 	private static final String	GEOCODER_REQUEST_MAPQUEST	= "http://geocoder.cit.api.here.com/6.2/geocode.xml";
+
+	private static final Double LAT_DEFAULT = -34.921439;
+	private static final Double LNG_DEFAULT = -57.954541;
 
 	/**
 	 * Constructor por defecto privado
@@ -42,12 +45,11 @@ public class GeocodingService {
 
 	}
 
-	public static GeoCord getGeocodingForAddress(String calle, String numero, String ciudad, String provincia){
+	private static GeoCord getGeocodingForAddress(String calle, String numero, String ciudad, String provincia){
+		Double latitud = LAT_DEFAULT;
+		Double lngitud = LNG_DEFAULT;
 
-		Double lat = -34.921439;
-		Double lng = -57.954541;
-
-		if ((StringUtils.isEmpty(calle) || StringUtils.isEmpty(numero))) { return new GeoCord(lat, lng); }
+		if ((StringUtils.isEmpty(calle) || StringUtils.isEmpty(numero))) { return new GeoCord(latitud, lngitud); }
 
 		if (StringUtils.isEmpty(ciudad)) {
 			ciudad = "+La+Plata";
@@ -87,10 +89,10 @@ public class GeocodingService {
 			for (int i = 0; i < resultNodeList.getLength(); ++i) {
 				Node node = resultNodeList.item(i);
 				if ("lat".equals(node.getNodeName())) {
-					lat = Double.parseDouble(node.getTextContent());
+					latitud = Double.parseDouble(node.getTextContent());
 				}
 				if ("lng".equals(node.getNodeName())) {
-					lng = Double.parseDouble(node.getTextContent());
+					lngitud = Double.parseDouble(node.getTextContent());
 				}
 			}
 
@@ -98,26 +100,53 @@ public class GeocodingService {
 			LOGGER.error("Error de entrada / salida intentando obtener las coordenadas de calle: " + calle + ", numero: " + numero + ", ciudad: " + ciudad
 					+ ", provincia: " + provincia, e);
 			LOGGER.warn("Se devuelve las corrdenadas del centro geografico de la ciudad de la plata");
-			return new GeoCord(-34.921439, -57.954541); // Centro geografico de
+			return new GeoCord(LAT_DEFAULT, LNG_DEFAULT); // Centro geografico de
 														// la ciudad de La
 														// Plata, Buenos Aires.
 		} catch (Exception e) {
 			LOGGER.error("Error Inesperado al intentar obtener las coordenadas de la direccion. calle: " + calle + ", numero: " + numero + ", ciudad: "
 					+ ciudad + ", provincia: " + provincia, e);
 			LOGGER.warn("Se devuelve las corrdenadas del centro geografico de la ciudad de la plata");
-			return new GeoCord(-34.921439, -57.954541);
+			return new GeoCord(LAT_DEFAULT, LNG_DEFAULT);
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
 			}
 		}
 
-		return new GeoCord(lat, lng);
+		return new GeoCord(latitud, lngitud);
 	}
 	
-	public static GeoCord getGeocodingForIntersection(String calle1, String calle2, String ciudad, String provincia){
-		Double lat = -34.921439;
-		Double lng = -57.954541;
+	/**
+	 * Obtiene las coordenadas a partir de una dirección.
+	 * La dirección puede estar compuesta por calle, numero e intersección (además de ciudad y prov.)
+	 * Si se especifica un numero de calle tendrá prioridad por sobre la intersección. 
+	 * Si se recibe calle1 y calle2, se obtienen las coordenadas para la intersección.
+	 * De otra forma, se devuelve las coordenadas geográficas del centro de la ciudad de La Plata.
+	 * 
+	 * @param calle1
+	 * @param numero
+	 * @param calle2
+	 * @param ciudad
+	 * @param provincia
+	 * @return coordenadas geográficas
+	 */
+	public static GeoCord getGeocoding(String calle1, String numero, String calle2, String ciudad, String provincia){
+		if ((StringUtils.isEmpty(calle1) || (StringUtils.isEmpty(numero) && StringUtils.isEmpty(calle2)) )) {
+			return new GeoCord(LAT_DEFAULT, LNG_DEFAULT); 
+		}
+		
+		if (StringUtils.isNotEmpty(calle1) && StringUtils.isNotEmpty(numero)){
+			return getGeocodingForAddress(calle1, numero, ciudad, provincia);
+		} else {
+			return getGeocodingForIntersection(calle1, calle2, ciudad, provincia);
+		}
+		
+	}
+	
+	private static GeoCord getGeocodingForIntersection(String calle1, String calle2, String ciudad, String provincia){
+		Double lat = LAT_DEFAULT;
+		Double lng = LNG_DEFAULT;
 
 		if ((StringUtils.isEmpty(calle1) || StringUtils.isEmpty(calle2))) { return new GeoCord(lat, lng); }
 		

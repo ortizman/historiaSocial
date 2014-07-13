@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="estilo.css" rel="StyleSheet" type="text/css" id="css"/>
-<title>Login</title>
+<title><s:text name="login.title"/></title>
 </head>
 <body>
 	<% String user = (String)session.getAttribute("user"); 
@@ -17,15 +17,15 @@
 			<div class="menu">
 			<div class="menuTop"></div>
 				<div class="menuBot">
-				<div class="menuSelected"> <a href="#">Login</a> </div> 
+				<div class="menuSelected"> <a href="#"><s:text name="login.title"/></a> </div> 
 			</div>
 			</div>
 			<div id="cuerpo">
 				<div id="formularioLogin">
 					<s:form action="iniciarSesion">
-						<s:textfield name="usuario" label="Usuario" maxlength="20"/>
-						<s:password name="pass" label="Contraseña" maxlength="20"/>
-						<s:submit value="Ingresar"/>
+						<s:textfield name="usuario" key="login.username" maxlength="20"/>
+						<s:password name="pass" key="login.password" maxlength="20"/>
+						<s:submit key="login.submit"/>
 					</s:form>
 				</div>
 			</div>

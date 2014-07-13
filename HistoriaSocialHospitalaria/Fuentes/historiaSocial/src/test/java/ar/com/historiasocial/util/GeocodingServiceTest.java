@@ -32,13 +32,13 @@ public class GeocodingServiceTest {
 
 	/**
 	 * Test method for
-	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocodingForAddress(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
+	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocoding(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
 	public final void testGetGeocodingForAddress() {
 		// Hospital de ninhos - La Plata
-		GeoCord geocord = GeocodingService.getGeocodingForAddress("14", "1631", "La Plata", "Buenos Aires");
+		GeoCord geocord = GeocodingService.getGeocoding("14", "1631", "", "La Plata", "Buenos Aires");
 		Assert.assertEquals(new Double(-34.932207), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.9425037), geocord.getLongitud());
 
@@ -47,7 +47,7 @@ public class GeocodingServiceTest {
 	@Test
 	public final void testGetGeocodingForInstersection() {
 		// Hospital de ninhos - La Plata
-		GeoCord geocord = GeocodingService.getGeocodingForIntersection("65", "12", "La Plata", "Buenos Aires");
+		GeoCord geocord = GeocodingService.getGeocoding("65", "", "12", "La Plata", "Buenos Aires");
 		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
 
@@ -56,7 +56,7 @@ public class GeocodingServiceTest {
 	@Test
 	public final void testGetGeocodingForInstersectionSinProv() {
 		// Hospital de ninhos - La Plata
-		GeoCord geocord = GeocodingService.getGeocodingForIntersection("65", "12", "La Plata", "");
+		GeoCord geocord = GeocodingService.getGeocoding("65", "", "12", "La Plata", "");
 		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
 
@@ -65,7 +65,7 @@ public class GeocodingServiceTest {
 	@Test
 	public final void testGetGeocodingForInstersectionVariante() {
 		// Hospital de ninhos - La Plata
-		GeoCord geocord = GeocodingService.getGeocodingForIntersection("Calle 65", "12", "La Plata", "");
+		GeoCord geocord = GeocodingService.getGeocoding("Calle 65", "", "12", "La Plata", "");
 		Assert.assertEquals(new Double(-34.9297905), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.9410019), geocord.getLongitud());
 
@@ -73,11 +73,11 @@ public class GeocodingServiceTest {
 	
 	/**
 	 * Test method for
-	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocodingForAddress(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
+	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocoding(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
 	 */
 	@Test
 	public final void testGetGeocodingForAddressEmptyFields() {
-		GeoCord geocord = GeocodingService.getGeocodingForAddress("", "", "La Plata", "Buenos Aires");
+		GeoCord geocord = GeocodingService.getGeocoding("", "", "", "La Plata", "Buenos Aires");
 		Assert.assertEquals(new Double(-34.921439), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.954541), geocord.getLongitud());
 
@@ -85,22 +85,22 @@ public class GeocodingServiceTest {
 	
 	/**
 	 * Test method for
-	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocodingForAddress(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
+	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocoding(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
 	 */
 	@Test
 	public final void testGetGeocodingForAddressEmptyAllFields() {
-		GeoCord geocord = GeocodingService.getGeocodingForAddress("", "", "", "");
+		GeoCord geocord = GeocodingService.getGeocoding("", "", "", "", "");
 		Assert.assertEquals(new Double(-34.921439), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.954541), geocord.getLongitud());
 	}
 	 
 	/**
 	 * Test method for
-	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocodingForAddress(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
+	 * {@link ar.com.historiasocial.util.GeocodingService#getGeocoding(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}
 	 */
 	@Test
 	public final void testGetGeocodingForAddressNullAllFields() {
-		GeoCord geocord = GeocodingService.getGeocodingForAddress(null, null, null, null);
+		GeoCord geocord = GeocodingService.getGeocoding(null, null, null, null, null);
 		Assert.assertEquals(new Double(-34.921439), geocord.getLatitud());
 		Assert.assertEquals(new Double(-57.954541), geocord.getLongitud());
 	}

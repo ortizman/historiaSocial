@@ -46,12 +46,12 @@ var idPaciente = 0;
 function renderActions(cellvalue, options, rowObject) {
 	
     return ("<div style=\"text-align:center\">"
-            	+"<a class=\"button\" title=\"Editar el paciente\" href=\"editarPaciente.action?paciente.id="+rowObject["id"]+"\"> <img src=\"images/16x16/Write2.png\"> </a>"
-            	+"<a class=\"button\" title=\"Especificar el grupo conviviente\" href=\"listGrupoConviviente.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Group.png\"> </a>"
-            	+"<a class=\"button\" title=\"Registrar Ingreso\" href=\"registrarIngreso.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go In.png\"> </a>" 
-            	+"<a class=\"button\" title=\"Registrar Alta\" href=\"registrarAlta.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go Out.png\"> </a>"
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.edit'/>\" href=\"editarPaciente.action?paciente.id="+rowObject["id"]+"\"> <img src=\"images/16x16/Write2.png\"> </a>"
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.cohabitantgroup'/>\" href=\"listGrupoConviviente.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Group.png\"> </a>"
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recordincome'/>\" href=\"registrarIngreso.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go In.png\"> </a>" 
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recorddischarged'/>\" href=\"registrarAlta.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go Out.png\"> </a>"
 				+"<div style=\"border-right: 2px solid black; display: inline\"></div>"
-            	+"<a class=\"button\" title=\"Historia\" href=\"abmPracticas.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Folder2.png\"> </a>"             			
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.historysocial'/>\" href=\"abmPracticas.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Folder2.png\"> </a>"             			
        			+"</div>");
 }
 
@@ -88,7 +88,7 @@ margin-top: 4%;
 }
 
 </style>
-<title>Listos de Pacientes</title>
+<title><s:text name="patient.pagetitle"/></title>
 </head>
 <body>
 	<% String user = (String)session.getAttribute("user"); 
@@ -109,15 +109,15 @@ margin-top: 4%;
 			<div id="cuerpo">
 				<div class="estiloDiv">
 				
-							<h3>Pacientes Activos</h3>
+							<h3><s:text name='patient.grilltitle'/></h3>
 					
 							<s:url id="remoteurl" action="datosTablaPacientes"/>
 							<s:url id="editurl" action="crudPaciente"/>
 							
 							<s:url id="profesionales" action="fillSelectProf"/>
 							
-							<div class="buttonImportan"><a class="eliminarPacienteClass" href="#">Eliminar Paciente </a> </div>
-							<div class="buttonImportan"><a href="creacionPaciente.action">Agregar Paciente </a> </div>
+							<div class="buttonImportan"><a class="eliminarPacienteClass" href="#"><s:text name='patient.delpatient'/> </a> </div>
+							<div class="buttonImportan"><a href="creacionPaciente.action"><s:text name='patient.addpatient'/> </a> </div>
 							
 							<sjg:grid	
 								id="gridtable_pacientes"

@@ -24,11 +24,11 @@ $(function(){
 
 <div id="header" class="headerLogin"> 
 		<div id="tituloHeader">
-			<a href="menu"> Hospital de Niños La Plata </a>
+			<a href="menu"> <s:text name="header.aplicationName"/> </a>
 		</div>
 		<div id="botonesHeader">
-			<span id="userConnect">Usuario: <s:property value="#session.profesionalLogin.nombre"/> <s:property value="#session.profesionalLogin.apellido"/>  </span>
-			<a href="cerrarSesion" class="salir" id="cerrarsesion" >Salir</a>
+			<span id="userConnect"><s:text name="header.username"/> <s:property value="#session.profesionalLogin.nombre"/> <s:property value="#session.profesionalLogin.apellido"/>  </span>
+			<a href="cerrarSesion" class="salir" id="cerrarsesion" ><s:text name="header.logout"/> </a>
 		</div>
 </div>
 
@@ -47,17 +47,17 @@ if(!"false".equals(conMenu)){
 	<div class="menu">
 		<div class="menuTop"></div>
 		<ul class="menuBot">
-			<li class="menuElem <% if(sp.compareToIgnoreCase("/abmPacientes.jsp")==0){ %> menuSelected <%}%>"><a href="abmPacientes.action">Pacientes</a></li>
-			<li class="menuElem <%if(comp(sp, "/pages/practica/")){ %> menuSelected <%}%>"><a href="abmPracticas.action">Pr&#225;cticas</a></li>
-			<li class="menuElem <% if(comp(sp, "/pages/institucion/")){ %> menuSelected <%}%>"><a href="abmInstituciones.action">Instituciones</a></li>
+			<li class="menuElem <% if(sp.compareToIgnoreCase("/abmPacientes.jsp")==0){ %> menuSelected <%}%>"><a href="abmPacientes.action"><s:text name="menu.patient"/></a></li>
+			<li class="menuElem <%if(comp(sp, "/pages/practica/")){ %> menuSelected <%}%>"><a href="abmPracticas.action"><s:text name="menu.practices"/></a></li>
+			<li class="menuElem <% if(comp(sp, "/pages/institucion/")){ %> menuSelected <%}%>"><a href="abmInstituciones.action"><s:text name="menu.institutions"/></a></li>
 			<%  
 			   if (esDirector){ %>
-			   <li class="menuElem <%if(comp(sp, "/pages/abmProfesionales.jsp") || comp(sp, "/pages/profesional/")){ %> menuSelected <%}%>"><a href="abmProfesionales.action">Profesionales</a></li>
-			   <li class="menuElem <%if(comp(sp, "/listado.jsp") || comp(sp, "/estadisticas.jsp") ){ %> menuSelected <%}%>"><a href="listado.action">Estad&#237;sticas</a></li>
+			   <li class="menuElem <%if(comp(sp, "/pages/abmProfesionales.jsp") || comp(sp, "/pages/profesional/")){ %> menuSelected <%}%>"><a href="abmProfesionales.action"><s:text name="menu.professional"/></a></li>
+			   <li class="menuElem <%if(comp(sp, "/listado.jsp") || comp(sp, "/estadisticas.jsp") ){ %> menuSelected <%}%>"><a href="listado.action"><s:text name="menu.statistics"/></a></li>
 			   
 			<% } 
 				if (esDirector){ %>
-			<li class="menuElem" style="margin-left: 2%" id="configuracion"><a href="#">Configuraci&oacute;n</a></li>
+			<li class="menuElem" style="margin-left: 2%" id="configuracion"><a href="#"><s:text name="menu.configurations"/></a></li>
 				<% } %>
 		</ul>
 	</div>

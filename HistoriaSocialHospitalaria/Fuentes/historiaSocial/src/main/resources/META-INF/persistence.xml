@@ -34,16 +34,22 @@
 		<properties>
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			
 			<property name="hibernate.connection.username" value="historia" />
 			<property name="hibernate.connection.password" value="historia" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
+			
+<!-- 			<property name="hibernate.connection.username" value="adminiyf734v" /> -->
+<!-- 			<property name="hibernate.connection.password" value="g2fhVG9-PBJG" /> -->
+<!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://127.8.71.130/tsrv" /> -->
+			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="none" />
 
 			<property name="hibernate.connection.provider_class"
 				value="org.hibernate.connection.C3P0ConnectionProvider" />
 
-			<property name="hibernate.connection.pool_size" value="20" />
+			<property name="hibernate.connection.pool_size" value="5" />
 			<property name="hibernate.current_session_context_class"
 				value="thread" />
 
@@ -65,7 +71,7 @@
 
 			<!-- configuration pool via c3p0 -->
 			<property name="hibernate.c3p0.min_size" value="5" />
-			<property name="hibernate.c3p0.max_size" value="15" />
+			<property name="hibernate.c3p0.max_size" value="10" />
 			<property name="hibernate.c3p0.acquire_increment" value="1" />
 			<property name="hibernate.c3p0.idle_test_period" value="300" /> <!-- seconds -->
 			<property name="hibernate.c3p0.timeout" value="900" /> <!-- seconds -->
