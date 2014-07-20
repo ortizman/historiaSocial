@@ -55,11 +55,13 @@ String user = (String)session.getAttribute("user");
 			        <li><a href="#fragment-3"><span>Grupo Conviviente</span></a></li>
 					<s:set name="jspMenu" value="menu"/>
 			    </ul>
-			<form action="" name="agregarConvivienteForm">
+			<form action="" name="agregarConvivienteForm" id="formConviviente">
 				<div id="fragment-3" class="leftLabel">
 			    	
 					<ul>
 					<input id="idPaciente" name="idPaciente" type="hidden" value="<%=idPaciente %>" />
+					<input id="idConviviente" name="conviviente.id" type="hidden" value=""/>
+					
 					<div class="column1">
 						<li id="foli1" class="notranslate"><label class="desc"
 							id="title1" for="Field1"> Nro </label>
@@ -192,7 +194,7 @@ String user = (String)session.getAttribute("user");
 									<option value="Semanal">Semanal</option>
 									<option value="Quincenal">Quincenal</option>
 									<option value="Mensual">Mensual</option>
-									<option value="Mensual">Otro</option>
+									<option value="Otro	">Otro</option>
 								</select>
 							</div></li>
 						<li id="foli20" class="notranslate">
@@ -235,7 +237,6 @@ String user = (String)session.getAttribute("user");
 								rownumbers="false"
 								autowidth="true"
 								
-								
 								editurl="%{editurl}"
 								navigator="true"
 								navigatorAddOptions="{reloadAfterSubmit:true}"
@@ -257,13 +258,12 @@ String user = (String)session.getAttribute("user");
 								<sjg:gridColumn name="obraSocial.id"  hidden="true" jsonmap="obraSocial.codigoObraSocial" editrules="{edithidden:true}" index="obraSocial" title="Obra Social" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="nacionalidad" index="nacionalidad" title="Nacionalidad" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="educacion" index="educacion" title="Educacion" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="edad" index="edad" title="Edad" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="convive" index="convive" title="Convive" hidden="false" editrules="{edithidden:true}" edittype="select" formatter="select" editoptions="{value:{true:'Si', false:'No'}}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="edad" index="edad" title="Edad" width="50" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="convive" index="convive" title="Convive" width="50" hidden="false" editrules="{edithidden:true}" edittype="select" formatter="select" editoptions="{value:{true:'Si', false:'No'}}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="ingresos" index="ingresos" title="Ingresos" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="estadoCivil" index="estadoCivil" title="Estado Civil" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="estadoCivil" index="estadoCivil"  title="Estado Civil" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="ocupacion" index="ocupacion" title="Ocupacion" hidden="true" editrules="{edithidden:true}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>								
-								
-								
+								<sjg:gridColumn name="actions" search="false" fixed="false" width="100" editrules="{edithidden:true}" dataType="html"  index="" title="Acciones" formatter="renderActions"/>								
 							</sjg:grid>
 						</div>
 				
@@ -329,6 +329,64 @@ String user = (String)session.getAttribute("user");
 			      return false;
 			  }); 
 			
+			function editConviviente(idConviviente){
+				data = 'conviviente.id='+idConviviente;
+				$.ajax({
+					  dataType: "json",
+					  url: "editarConviviente.action",
+					  data: data,
+					  success: function(a,b,c){
+						  if("success" === b){
+							 conv = a.conviviente;
+						      $("input#nombres").val(conv.nombres);
+						      $("input#nro").val(conv.nro); 			    
+						      $("input#edad").val(conv.edad);  
+						      $("input#apellido").val(conv.apellido);
+						      $("select#vinculo").val(conv.vinculo);
+						      $("select#nacionalidad").val(conv.nacionalidad);
+						      $("select#estadoCivil").val(conv.estadoCivil);
+						      $("select#educacion").val(conv.educacion);
+						      $("select#ocupacion").val(conv.ocupacion);
+						      $("select#obraSocial").val(conv.obraSocial.id);
+						      $("select#ingresos").val(conv.ingresos);
+						      $("input#convive").prop('checked', conv.convive);
+						      $("input#idConviviente").val(conv.id);
+						      $("input#submit_btn").val("Editar Conviviente");
+						      $("input#submit_btn").css("display", "inline");
+						      if($("input#convCancel").length === 0){
+							      var r=$('<input type="button" id="convCancel" value="Cancel" onclick="reseteo()" style="display: inline;" />');
+							      $("input#submit_btn").after(r);
+						      }
+						      
+						  }
+					  },
+					  error: function(){
+						  alert("Se produjo un error al intentar editar el conviviente");
+					  }
+					});
+				
+				console.info("id del convivnete: " + idConviviente);
+				
+			}
+			
+			function reseteo(){
+				$("#formConviviente")[0].reset();
+				$("input#idConviviente").val("");
+				
+				$("input#submit_btn").val("Agregar Conviviente");
+				
+				if($("input#convCancel").length >= 1){
+					$("input#convCancel").remove();
+				}
+			}
+			
+			function renderActions(cellvalue, options, rowObject) {
+				
+			    return ("<div style=\"text-align:center\">"
+			            	+"<a class=\"button\" title=\"<s:text name='conviviente.tooltip.edit'/>\" href=\"#\" onclick=\"editConviviente("+rowObject["id"]+")\"> <img src=\"images/16x16/Write2.png\"> </a>"
+			       			+"</div>");
+			}
+			
 			</script>
     		
     	<jsp:include page="../../footer.jsp"/>		
@@ -337,5 +395,7 @@ String user = (String)session.getAttribute("user");
 	
 	<%} %>
  
+<a href="#" onclick="editConviviente()" ></a>
 </body>
+
 </html>	

@@ -6,7 +6,7 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd
-    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd"
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd"
 	default-autowire="byType">
 
 	<tx:annotation-driven />

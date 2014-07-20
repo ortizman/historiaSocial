@@ -10,6 +10,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.dao.PersonaDAO;
+import ar.com.historiasocial.entities.Conviviente;
 import ar.com.historiasocial.entities.ObraSocial;
 import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.entities.Persona;
@@ -26,6 +27,8 @@ public class ListPersonasAction extends ListJQGridAction {
 	private List<Persona>			personas			= new ArrayList<Persona>();
 	private PersonaDAO				personaDAO;
 	private Long					idPaciente;
+	private Long					idConviviente;
+	private Persona				conviviente;
 
 	private GenericDAO<ObraSocial>	obraSocialDAO;
 	private List<ObraSocial>		obrasSociales;
@@ -50,6 +53,16 @@ public class ListPersonasAction extends ListJQGridAction {
 		this.setPersonas(pers);
 		this.setTotal(paginador.getCantidadDePaginas());
 
+		return SUCCESS;
+	}
+	
+	@Actions({ @Action(value = "/editarConviviente", results = { @Result(name = "success", type = "json", params = {"ignoreHierarchy", "false",  "includeProperties",
+	"conviviente\\.\\w*, conviviente\\.obraSocial\\.\\w*" }) }) })
+	public String retrieveConviviente(){
+		
+		Persona conviviente = this.getPersonaDAO().retrieveById(this.getConviviente().getId());
+		this.setConviviente(conviviente);
+		
 		return SUCCESS;
 	}
 
@@ -105,6 +118,22 @@ public class ListPersonasAction extends ListJQGridAction {
 	 */
 	public void setObraSocialDAO(GenericDAO<ObraSocial> obraSocialDAO){
 		this.obraSocialDAO = obraSocialDAO;
+	}
+
+	public Long getIdConviviente() {
+		return idConviviente;
+	}
+
+	public void setIdConviviente(Long idConviviente) {
+		this.idConviviente = idConviviente;
+	}
+
+	public void setConviviente(Persona conviviente) {
+		this.conviviente = conviviente;
+	}
+
+	public Persona getConviviente() {
+		return conviviente;
 	}
 
 }

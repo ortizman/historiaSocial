@@ -45,7 +45,7 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 			return SUCCESS;
 		}
 	}
-
+	
 	private Boolean editarConviviente(){
 		return false;
 	}
