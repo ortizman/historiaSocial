@@ -24,6 +24,7 @@ $(function() {
 	if(op == 'view'){
 		$(":input").attr('readonly', 'readonly');
 	}
+	
 });
 
 $(function(){
@@ -58,7 +59,7 @@ String user = (String)session.getAttribute("user");
 			<form action="" name="agregarConvivienteForm" id="formConviviente">
 				<div id="fragment-3" class="leftLabel">
 			    	
-					<ul>
+					<ul id="toggle">
 					<input id="idPaciente" name="idPaciente" type="hidden" value="<%=idPaciente %>" />
 					<input id="idConviviente" name="conviviente.id" type="hidden" value=""/>
 					
@@ -286,6 +287,51 @@ String user = (String)session.getAttribute("user");
 			});
 			$(".datepicker").datepicker($.datepicker.regional['es']);
 			
+			//Envio por AJAX los datos para editar el conviviernte.
+			function editConviviente() {  
+			    // validate and process form here 
+			      var idConv = $("input#idConviviente").val();
+			      var nombresVal = $("input#nombres").val();
+			      var nroVal = $("input#nro").val(); 			    
+			      var edadVal = $("input#edad").val();  
+			      var apellidoVal = $("input#apellido").val();
+			      var vinculoVal = $("select#vinculo").val();
+			      var nacionalidadVal = $("select#nacionalidad").val();
+			      var estadoCivilVal = $("select#estadoCivil").val();
+			      var educacionVal = $("select#educacion").val();
+			      var ocupacionVal = $("select#ocupacion").val();
+			      var obraSocialVal = $("select#obraSocial").val();
+			      var ingresosVal = $("select#ingresos").val();
+			      var conviveVal = $("input#convive").val();
+// 			      var idPaciente = $("input#idPaciente").val();
+			      
+			      var dataString = 'id='+ idConv +
+			      				   '&nro='+ nroVal +
+			      				   '&nombres='+ nombresVal + 
+			      				   '&apellido='+ apellidoVal + 
+			      				   '&edad=' + edadVal + 
+			      				   '&vinculo=' + vinculoVal + 
+			      				   '&nacionalidad=' + nacionalidadVal + 
+			      				   '&estadoCivil=' + estadoCivilVal + 
+			      				   '&educacion=' + educacionVal + 
+			      				   '&ocupacion=' + ocupacionVal + 
+			      				   '&obraSocial.id=' + obraSocialVal +
+			      				   '&convive=' + $(".convive").is(":checked") +			      				   
+			      				   '&ingresos=' + ingresosVal;
+			      
+			      $.ajax({
+			    	  type: "POST",  
+			    	  url: "editConviviente.action",  
+			    	  data: dataString,  
+			    	  success: function() {
+			    		  $("#gridtableConviviente").trigger("reloadGrid");
+			    		  reseteo();
+			    	  } 
+			      });
+			      return false;
+			  }; 			
+			
+			
 			//Envio por AJAX los datos del conviviernte.
 			$(".buttonSubConviviente").click(function() {  
 			    // validate and process form here  
@@ -329,7 +375,7 @@ String user = (String)session.getAttribute("user");
 			      return false;
 			  }); 
 			
-			function editConviviente(idConviviente){
+			function getConviviente(idConviviente){
 				data = 'conviviente.id='+idConviviente;
 				$.ajax({
 					  dataType: "json",
@@ -337,7 +383,9 @@ String user = (String)session.getAttribute("user");
 					  data: data,
 					  success: function(a,b,c){
 						  if("success" === b){
-							 conv = a.conviviente;
+							  $("#toggle").effect( "highlight", {color:"#D6D6D6"}, 1500 );
+							  
+							  conv = a.conviviente;
 						      $("input#nombres").val(conv.nombres);
 						      $("input#nro").val(conv.nro); 			    
 						      $("input#edad").val(conv.edad);  
@@ -351,11 +399,16 @@ String user = (String)session.getAttribute("user");
 						      $("select#ingresos").val(conv.ingresos);
 						      $("input#convive").prop('checked', conv.convive);
 						      $("input#idConviviente").val(conv.id);
-						      $("input#submit_btn").val("Editar Conviviente");
-						      $("input#submit_btn").css("display", "inline");
-						      if($("input#convCancel").length === 0){
+						      
+						      if($("input#convCancel").length === 0){ 
 							      var r=$('<input type="button" id="convCancel" value="Cancel" onclick="reseteo()" style="display: inline;" />');
 							      $("input#submit_btn").after(r);
+						      }
+						      
+						      if($("input#convEdit").length === 0){
+							      var c=$('<input type="button" style="display: inline;" tabindex="13" name="submit" class="buttonEditConviviente" onclick="editConviviente()" id="convEdit" value="Editar Conviviente" />');
+							      $("input#submit_btn").after(c);
+							      $("input#submit_btn").hide();
 						      }
 						      
 						  }
@@ -365,7 +418,6 @@ String user = (String)session.getAttribute("user");
 					  }
 					});
 				
-				console.info("id del convivnete: " + idConviviente);
 				
 			}
 			
@@ -373,17 +425,21 @@ String user = (String)session.getAttribute("user");
 				$("#formConviviente")[0].reset();
 				$("input#idConviviente").val("");
 				
-				$("input#submit_btn").val("Agregar Conviviente");
+				if($("input#convEdit").length >= 1){
+					$("input#convEdit").remove();
+				}
 				
 				if($("input#convCancel").length >= 1){
 					$("input#convCancel").remove();
 				}
+				
+				$("input#submit_btn").show();
 			}
 			
 			function renderActions(cellvalue, options, rowObject) {
 				
 			    return ("<div style=\"text-align:center\">"
-			            	+"<a class=\"button\" title=\"<s:text name='conviviente.tooltip.edit'/>\" href=\"#\" onclick=\"editConviviente("+rowObject["id"]+")\"> <img src=\"images/16x16/Write2.png\"> </a>"
+			            	+"<a class=\"button\" title=\"<s:text name='conviviente.tooltip.edit'/>\" href=\"#\" onclick=\"getConviviente("+rowObject["id"]+")\"> <img src=\"images/16x16/Write2.png\"> </a>"
 			       			+"</div>");
 			}
 			
@@ -395,7 +451,6 @@ String user = (String)session.getAttribute("user");
 	
 	<%} %>
  
-<a href="#" onclick="editConviviente()" ></a>
 </body>
 
 </html>	

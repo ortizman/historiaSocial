@@ -190,6 +190,17 @@ public class PacienteDAOHibernateJPA extends GenericDAOHibernateJPA<Paciente> im
 		}
 
 	}
+	
+	@Override
+	public void editarConviviente(Conviviente conviviente){
+		try {
+			getPersonaDAO().saveOrUpdate(conviviente);
+		} catch (Exception e) {
+			LOGGER.error("Error editar el conviviente: " + conviviente, e);
+			throw new HSDataAccessRuntimeException("Error agregando el conviviente", e);
+		}
+
+	}
 
 	public PersonaDAO getPersonaDAO(){
 		return personaDAO;

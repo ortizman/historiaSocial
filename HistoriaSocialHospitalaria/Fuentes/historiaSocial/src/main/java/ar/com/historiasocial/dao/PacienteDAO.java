@@ -28,5 +28,6 @@ public interface PacienteDAO extends GenericDAO<Paciente>{
 	 * @param term
 	 * @return
 	 */
-	public List<Paciente> search(String term); 
+	public List<Paciente> search(String term);
+	void editarConviviente(Conviviente conviviente); 
 }

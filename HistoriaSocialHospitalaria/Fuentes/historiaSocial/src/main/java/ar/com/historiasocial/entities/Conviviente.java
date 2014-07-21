@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 
 @Entity
+@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Table(name="conviviente")
 public class Conviviente extends Persona {

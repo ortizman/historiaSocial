@@ -602,6 +602,13 @@
 			<result name="input">/login.jsp</result>
 			<result name="error">/pages/paciente/formGrupoConviviente.jsp</result>
 		</action>
+		
+		<action name="editConviviente" method="editarConviviente"
+			class="crudPersonaAction">
+			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/pages/paciente/formGrupoConviviente.jsp</result>
+		</action>		
 
 		<action name="crudConviviente" method="operConviviente" class="crudPersonaAction">
 			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>

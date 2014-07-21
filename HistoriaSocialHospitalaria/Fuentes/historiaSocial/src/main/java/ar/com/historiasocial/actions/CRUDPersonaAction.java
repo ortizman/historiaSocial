@@ -30,7 +30,7 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 	public String operConviviente(){
 		boolean exito = false;
 		if (oper.equalsIgnoreCase("edit")) {
-			exito = editarConviviente();
+			exito = false;
 		} else {
 			if (oper.equalsIgnoreCase("del")) {
 				exito = eliminarConviviente();
@@ -46,10 +46,6 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 		}
 	}
 	
-	private Boolean editarConviviente(){
-		return false;
-	}
-
 	/**
 	 * Este método se expone con Struts y se invoca directamente.
 	 * 
@@ -59,6 +55,18 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 		Conviviente p = this.getModel();
 		try {
 			pacienteDAO.agregarConviviente(p, idPaciente);
+			this.setObrasSociales(getObraSocialDAO().retrieveAll());
+		} catch (Exception e) {
+			return ERROR;
+		}
+
+		return SUCCESS;
+	}
+	
+	public String editarConviviente(){
+		Conviviente conv = this.getModel();
+		try {
+			pacienteDAO.editarConviviente(conv);
 			this.setObrasSociales(getObraSocialDAO().retrieveAll());
 		} catch (Exception e) {
 			return ERROR;
