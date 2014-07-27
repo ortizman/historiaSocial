@@ -72,6 +72,16 @@
 		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
 	</bean>
 
+	<bean id="listHistoriaSocial" class="ar.com.historiasocial.actions.HistoriaSocialAction"
+		scope="prototype">
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+	</bean>
+
 	<bean id="altaPacienteAction" class="ar.com.historiasocial.actions.PacienteAction"
 		scope="prototype">
 		<property name="pacienteDAO" ref="pacienteDAO" />

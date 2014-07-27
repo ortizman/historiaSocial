@@ -16,6 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Table(name="persona")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
 public class Persona implements ar.com.historiasocial.dao.Entity{
 	/**
 	 * 
