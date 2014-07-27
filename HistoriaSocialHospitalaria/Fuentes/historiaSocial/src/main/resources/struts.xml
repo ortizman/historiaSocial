@@ -90,6 +90,16 @@
 		</action>
 		<!--Fin mapeos de manejo de sessión --><!--Menú -->
 
+
+		<!-- Inicio Mapeos de los actions relacionados a la historia social del paciente -->
+		<action name="historiaSocial" method="obtenerHistoriaSocial"
+			class="listHistoriaSocial">
+			<result name="success">/pages/paciente/historiaSocial.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+
+
 		<!-- Inicio Mapeos de los actions relacionados al manejo de Pacientes -->
 		<action name="creacionPaciente" method="creacionPaciente"
 			class="altaPacienteAction">

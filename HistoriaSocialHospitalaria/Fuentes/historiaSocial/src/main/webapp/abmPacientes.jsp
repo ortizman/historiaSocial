@@ -51,7 +51,7 @@ function renderActions(cellvalue, options, rowObject) {
             	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recordincome'/>\" href=\"registrarIngreso.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go In.png\"> </a>" 
             	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recorddischarged'/>\" href=\"registrarAlta.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go Out.png\"> </a>"
 				+"<div style=\"border-right: 2px solid black; display: inline\"></div>"
-            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.historysocial'/>\" href=\"abmPracticas.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Folder2.png\"> </a>"             			
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.historysocial'/>\" href=\"historiaSocial.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Folder2.png\"> </a>"             			
        			+"</div>");
 }
 

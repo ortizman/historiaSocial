@@ -1,12 +1,15 @@
 package ar.com.historiasocial.actions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+
+import com.sun.org.apache.bcel.internal.generic.IFNULL;
 
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.dao.HistoriaSocialDAO;
@@ -20,16 +23,19 @@ import ar.com.historiasocial.entities.Practica;
 import ar.com.historiasocial.entities.Profesional;
 import ar.com.historiasocial.entities.TipoDePractica;
 import ar.com.historiasocial.entities.TipoDeProblematica;
+import ar.com.historiasocial.entities.Tratamiento;
 
 /**
  * @author Manuel Ortiz - ortizman@gmail.com
- * 
+ * 	
  */
 @ParentPackage(value = "default")
 public class HistoriaSocialAction extends ListJQGridAction {
 
 	private static final long				serialVersionUID	= 1L;
 	private List<Practica>					practicas			= new ArrayList<Practica>();
+	private List<Practica> 					practicasAmbulatorias;
+	private List<Tratamiento>				tratamientos = new ArrayList<Tratamiento>();
 	private Integer							idPaciente;
 
 	private HistoriaSocialDAO				historiaSocialDAO;
@@ -79,37 +85,64 @@ public class HistoriaSocialAction extends ListJQGridAction {
 	public void setIdPaciente(Integer idPaciente){
 		this.idPaciente = idPaciente;
 	}
+	
+	public String obtenerHistoriaSocial(){
+		return SUCCESS;
+	}
 
-	@Override
-	@Actions({ @Action(value = "/datosTablaHistoriaSocial", results = { @Result(name = "success", type = "json", params = {"ignoreHierarchy", "false", 
+	@Actions({ @Action(value = "/datosHistoriaSocialAmbulatoria", results = { @Result(name = "success", type = "json", params = {"ignoreHierarchy", "false", 
 			"includeProperties",
-			"page, total, record, sord, sidx, rows, ^practicas\\[\\d+\\]\\.id , ^practicas\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.id, ^practicas\\[\\d+\\]\\.detalle, ^practicas\\[\\d+\\]\\.diagnostico, ^practicas\\[\\d+\\]\\.fechaPractica, ^practicas\\[\\d+\\]\\.fechaCarga, ^practicas\\[\\d+\\]\\.tipoPractica\\.id, ^practicas\\[\\d+\\]\\.tipoPractica\\.codigo, ^practicas\\[\\d+\\]\\.tipoProblematica\\.id, ^practicas\\[\\d+\\]\\.tipoProblematica\\.codigo, ^practicas\\[\\d+\\]\\.profesional\\.id, ^practicas\\[\\d+\\]\\.profesional\\.nombreCompleto, ^practicas\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.id, ^practicas\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.paciente\\.nombreCompleto, ^practicas\\[\\d+\\]\\.localidad" }) }) })
-	public String execute(){
+			"^practicasAmbulatorias\\[\\d+\\]\\.id , ^practicasAmbulatorias\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.id, ^practicasAmbulatorias\\[\\d+\\]\\.detalle, ^practicasAmbulatorias\\[\\d+\\]\\.diagnostico, ^practicasAmbulatorias\\[\\d+\\]\\.fechaPractica, ^practicasAmbulatorias\\[\\d+\\]\\.fechaCarga, ^practicasAmbulatorias\\[\\d+\\]\\.tipoPractica\\.id, ^practicasAmbulatorias\\[\\d+\\]\\.tipoPractica\\.codigo, ^practicasAmbulatorias\\[\\d+\\]\\.tipoProblematica\\.id, ^practicasAmbulatorias\\[\\d+\\]\\.tipoProblematica\\.codigo, ^practicasAmbulatorias\\[\\d+\\]\\.profesional\\.id, ^practicasAmbulatorias\\[\\d+\\]\\.profesional\\.nombreCompleto, ^practicasAmbulatorias\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.id, ^practicasAmbulatorias\\[\\d+\\]\\.tratamiento\\.historiaSocial\\.paciente\\.nombreCompleto, ^practicasAmbulatorias\\[\\d+\\]\\.localidad" }) }) })
+	public String historiaSocialPracticasAmbulatorias(){
+		if (this.getIdPaciente() != null && !"".equals(this.getIdPaciente())) {
 
-		if (this.getIdPaciente() != null && "".equals(this.getIdPaciente())) {
 			HistoriaSocial hs = historiaSocialDAO.getHistoriaSocialByPacienteId(this.getIdPaciente());
+			practicasAmbulatorias = hs.getTratamientoAmbulatorio().getPracticas();
+		}		
+		return SUCCESS;
+	}
+
+	
+	@Actions({ @Action(value = "/datosHistoriaSocialIngresoEgreso", results = { @Result(name = "success", type = "json", params = {"ignoreHierarchy", "false", 
+			"includeProperties",
+			"^tratamientos\\[\\d+\\]\\.\\w* , ^tratamientos\\[\\d+\\]\\.historiaSocial\\w*" }) }) })
+	public String historiaSocialIngresoEgreso(){
+
+		if (this.getIdPaciente() != null && !"".equals(this.getIdPaciente())) {
+			HistoriaSocial hs = historiaSocialDAO.getHistoriaSocialByPacienteId(this.getIdPaciente());
+			Tratamiento tratamientoActual = hs.getTratamientoActual();
+			if (tratamientoActual != null) {
+				tratamientos.add(tratamientoActual);
+			}
+			
+			if (hs.getTratamientosHistoricos() != null) {
+				tratamientos.addAll(hs.getTratamientosHistoricos());
+			}
+			
 		}
-
-		if (this.getRows() == 0) {
-			this.setRows(Paginador.CANT_PAGE_DEFAULT);
-		}
-
-		Paginador paginador = new Paginador(this.getRows(), this.getPage());
-
-		List<Practica> ps;
-		if ((this.getSidx() != null && !this.getSidx().isEmpty()) && (this.getSord() != null) && !this.getSord().isEmpty()) {
-			ps = practicaDAO.retrieveAll(paginador, this.getSidx(), this.getSord(), idPaciente);
-		} else {
-			ps = practicaDAO.retrieveAll(paginador, idPaciente);
-		}
-
-		this.setPracticas(ps);
-		this.setCantPags(paginador.cantidadDePaginas());
-		this.setTotal(paginador.getCantidadDePaginas());
+//
+//		if (this.getRows() == 0) {
+//			this.setRows(Paginador.CANT_PAGE_DEFAULT);
+//		}
+//
+//		Paginador paginador = new Paginador(this.getRows(), this.getPage());
+//
+//		List<Practica> ps;
+//		if ((this.getSidx() != null && !this.getSidx().isEmpty()) && (this.getSord() != null) && !this.getSord().isEmpty()) {
+//			ps = practicaDAO.retrieveAll(paginador, this.getSidx(), this.getSord(), idPaciente);
+//		} else {
+//			ps = practicaDAO.retrieveAll(paginador, idPaciente);
+//		}
+//
+//		this.setPracticas(ps);
+//		this.setCantPags(paginador.cantidadDePaginas());
+//		this.setTotal(paginador.getCantidadDePaginas());
 
 		return SUCCESS;
 
 	}
+	
+	
 
 	@Actions({ @Action(value = "/fillSelectProf", results = { @Result(name = "success", location = "/pages/practica/fillSelectProf.jsp") }) })
 	public String fillSelectProf(){
@@ -235,6 +268,22 @@ public class HistoriaSocialAction extends ListJQGridAction {
 	 */
 	public void setTipoDePracticaDAO(GenericDAO<TipoDePractica> tipoDePracticaDAO){
 		this.tipoDePracticaDAO = tipoDePracticaDAO;
+	}
+
+	public List<Practica> getPracticasAmbulatorias() {
+		return practicasAmbulatorias;
+	}
+
+	public void setPracticasAmbulatorias(List<Practica> practicasAmbulatorias) {
+		this.practicasAmbulatorias = practicasAmbulatorias;
+	}
+
+	public List<Tratamiento> getTratamientos() {
+		return tratamientos;
+	}
+
+	public void setTratamientos(List<Tratamiento> tratamientos) {
+		this.tratamientos = tratamientos;
 	}
 
 }
