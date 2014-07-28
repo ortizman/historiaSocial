@@ -1,15 +1,12 @@
 package ar.com.historiasocial.actions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
-import com.sun.org.apache.bcel.internal.generic.IFNULL;
 
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.dao.HistoriaSocialDAO;
@@ -18,7 +15,6 @@ import ar.com.historiasocial.dao.PracticaDAO;
 import ar.com.historiasocial.dao.ProfesionalDAO;
 import ar.com.historiasocial.entities.HistoriaSocial;
 import ar.com.historiasocial.entities.Paciente;
-import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.entities.Practica;
 import ar.com.historiasocial.entities.Profesional;
 import ar.com.historiasocial.entities.TipoDePractica;

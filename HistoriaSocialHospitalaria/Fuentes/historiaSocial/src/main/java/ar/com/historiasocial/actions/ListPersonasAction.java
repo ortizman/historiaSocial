@@ -10,7 +10,6 @@ import org.apache.struts2.convention.annotation.Result;
 
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.dao.PersonaDAO;
-import ar.com.historiasocial.entities.Conviviente;
 import ar.com.historiasocial.entities.ObraSocial;
 import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.entities.Persona;
