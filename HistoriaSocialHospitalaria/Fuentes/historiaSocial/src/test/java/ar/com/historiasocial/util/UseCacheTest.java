@@ -5,6 +5,8 @@ package ar.com.historiasocial.util;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
