@@ -33,8 +33,6 @@ function renderActions(cellvalue, options, rowObject) {
             	+"<a class=\"button\" title=\"Editar la practica\" href=\"editarPractica.action?idPractica="+rowObject["id"]+"\"> <img src=\"images/16x16/Write2.png\"> </a>"
             	+"<a class=\"button\" onclick=\"return confirmar()\" title=\"Eliminar la practica\" href=\"eliminarPractica.action?idPractica="+rowObject["id"]+"\"> <img src=\"images/16x16/Minus.png\"> </a>"
        			+"</div>");
-    
-
 }
 </script> 
 <style type="text/css">
@@ -104,6 +102,7 @@ margin-top: 4%;
 				    			multiselect="false"
 				    			autowidth="true"
 				    			shrinkToFit="false"
+				    			gridview="true"
 								
 							> 
 								

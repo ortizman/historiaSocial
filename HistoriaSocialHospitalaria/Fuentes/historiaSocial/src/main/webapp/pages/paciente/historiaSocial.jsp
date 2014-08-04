@@ -20,25 +20,38 @@
 </head>
 <body>
 <% 
-Integer idPaciente = (Integer)request.getAttribute("idPaciente");
+Long idPaciente = (Long)request.getAttribute("idPaciente");
 String user = (String)session.getAttribute("user");
 if (user == null){ %>
 		<jsp:forward page="/login.jsp"></jsp:forward>
 <%} else { %>
 
-		<div id="pagina">
+		<div id="pagina"> 
 			<jsp:include page="../../header.jsp">
 			    <jsp:param value="false" name="conMenu"/>
 	   		</jsp:include>
 
- 			<div class="buttonReturn"><a href="abmPacientes.action" > Volver </a></div>
-    		
-			<div id="tabs" style="font-size: 14px">
+			<div class="buttonReturn"><a href="abmPacientes.action" > Volver </a></div>
+			<div id="tabs" style="font-size: 16px;">
 			    <ul>
-			        <li><a href="#fragment-3"><span>Historia Social del Paciente: </span></a></li>
-					<s:set name="jspMenu" value="menu"/>
+			        <li style="float: right;"><a href="#fragment-3"><span>Historia Social del Paciente</span></a></li>
+<%-- 					<s:set name="jspMenu" value="menu"/> --%>
 			    </ul>
-							<h3>Ingresos y Egresos del Servicio Social</h3>
+			    <div class="pacienteDetalle">
+			    	<div class="pDato"><label>Nombre:</label><div><s:property value="paciente.nombres" default="-"/> </div></div>
+			    	<div class="pDato"><label>Apellido:</label><div><s:property value="paciente.apellidos" default="-" /></div></div>
+			    	<div class="pDato"><label>Fecha de Nacimiento:</label><div><s:date name="paciente.fechaNacimiento" format="dd/MM/yyyy"/></div></div>
+			    	<div class="pDato"><label>Lugar de Nacimiento:</label><div><s:property value="paciente.lugarDeNacimiento" default="-" /></div></div>
+			    	<div class="pDato"><label>Documento:</label><div><s:property value="paciente.documento" default="-" /></div></div>
+			    	<div class="pDato"><label>Sexo:</label><div><s:property value="paciente.sexo" default="-" /></div></div>
+			    	<div class="pDato"><label>Celular:</label><div><s:property value="paciente.celular" default="-" /></div></div>
+			    	<div class="pDato"><label>Teléfono :</label><div><s:property value="paciente.telefono" default="-" /></div></div>
+			    	<div class="pDato"><label>Inicio Servicio Social:</label><div><s:date name="paciente.fechaInicioServSocial" format="dd/MM/yyyy"/></div></div>
+			    </div>
+			    
+							<h3>Ingresos y Egresos al Servicio Social</h3>
+							<s:url id="subgridpracticas" action="datosTablaPracticasPorTratamiento" includeParams="get"/>
+							<s:url id="subgridpracticasedit" action="crudPracticas"/>
 							<s:url id="ambulatoriasURL" action="datosHistoriaSocialAmbulatoria" includeParams="get"/>
 							<s:url id="ingresoegresoURL" action="datosHistoriaSocialIngresoEgreso" includeParams="get"/>
 							<s:url id="editurl" action="crudConviviente" includeParams="get"/>
@@ -54,7 +67,6 @@ if (user == null){ %>
 								rowNum="5"
 								rownumbers="false"
 								autowidth="true"
-								
 								editurl="%{editurl}"
 								navigator="true"
 								navigatorAddOptions="{reloadAfterSubmit:true}"
@@ -62,22 +74,63 @@ if (user == null){ %>
 								navigatorSearch="false"
 								navigatorEditOptions="{reloadAfterSubmit:true,closeAfterEdit:true, height:450, width:340}"
 						    	navigatorView="false"
-						    	navigatorViewOptions=""
 						    	navigatorDelete="false"
 						    	navigatorAdd="false"
 						    	navigatorDeleteOptions="{reloadAfterSubmit:true}"
 								editinline="false"
 				    			multiselect="false"
+				    			pagerButtons="false"
 							>
-								<sjg:gridColumn name="id" index="id" hidden="true" formatter="integer" title="ID Conviviente" sortable="true" editable="true" searchoptions="{sopt:['eq']}"/>
-								<sjg:gridColumn name="fechaIngreso" index="fechaIngreso" title="Fecha Ingreso" sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="FechaInterCons" index="FechaInterCons" title="Fecha Inter Cons." sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="fechaInternacion" index="fechaInternacion" title="Fecha Internación" sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="detalleDiagnosticoIngreso"  index="detalleDiagnosticoIngreso" title="Diagnóstico de Ingreso" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="fechaAltaIniciada" index="fechaAltaIniciada" title="Alta Iniciada" sortable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="fechaAltaEjecutada" index="fechaAltaEjecutada" title="Alta Ejecutada" sortable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+							
+							<sjg:grid	
+								id="gridtable_practicas"
+								caption="Prácticas"
+								dataType="json"
+								subGridUrl="%{subgridpracticas}"
+								pager="false"
+								formIds="pacienteid"
+								gridModel="practicas"
+								rowList="2,5,10,20"
+								rowNum="10"
+								rownumbers="false"
+								editurl="%{subgridpracticasedit}"
+								navigator="false"
+								navigatorAddOptions="{reloadAfterSubmit:true, closeAfterAdd:true}"
+								navigatorEdit="false"
+								navigatorEditOptions="{reloadAfterSubmit:false,closeAfterEdit:true}"
+						    	navigatorView="false"
+						    	navigatorViewOptions="{}"
+						    	navigatorDelete="false"
+						    	navigatorDeleteOptions="{reloadAfterSubmit:true}"
+								editinline="false"
+				    			multiselect="false"
+				    			gridview="true"
+				    			width="950"
+								
+							> 
+								
+								<sjg:gridColumn name="id" index="id" width="0" hidden="true" formatter="integer" editable="true" title="ID Practicas" sortable="true" searchoptions="{sopt:['eq']}"/>
+								<sjg:gridColumn name="fechaPractica" index="fechaPractica" width="120" title="Fecha Práctica" sortable="true" editoptions="{size: 12, maxlength: 10, dataInit: function (element) { $(element).datepicker({dateFormat: 'dd/mm/yy', changeYear: true}) } }" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaCarga" index="fechaCarga" title="Fecha Carga" edittype="text" editoptions="{size: 12, maxlength: 10, dataInit: function (element) { $(element).datepicker({dateFormat: 'dd/mm/yy', changeYear: true}) } }" sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="tipoPractica.id"  jsonmap="tipoPractica.codigo" index="tipoPractica.codigo" title="Codigo Práctica" sortable="true" searchoptions="{sopt:['eq']}"/>
+								<sjg:gridColumn name="tipoProblematica.id"  jsonmap="tipoProblematica.codigo"  index="tipoProblematica.codigo" title="Codigo Problemática" sortable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="profesional.id" jsonmap="profesional.nombreCompleto" width="145" index="profesional.nombreCompleto" title="Profesional a Cargo" sortable="true"  searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="actions" id="id" width="100" editrules="{edithidden:true}" dataType="html" title="Acciones" formatter="renderActionsPracticas"/>
+							</sjg:grid>
+							
+							
+							
+							
+							
+								<sjg:gridColumn name="idtratamiento" jsonmap="id" title="" index="id" hidden="true" sortable="true" editable="true" key="true" searchoptions="{sopt:['eq']}"/>
+								<sjg:gridColumn name="fechaIngreso" index="fechaIngreso" width="100" title="Fecha Ingreso" sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="FechaInterCons" index="FechaInterCons" width="140" title="Fecha Inter Cons." sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaInternacion" index="fechaInternacion" width="100" title="Fecha Internación" sortable="true" editable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="detalleDiagnosticoIngreso"   index="detalleDiagnosticoIngreso" title="Diagnóstico de Ingreso" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaAltaIniciada" index="fechaAltaIniciada"  width="120" title="Alta Iniciada" sortable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaAltaEjecutada" index="fechaAltaEjecutada" width="120" title="Alta Ejecutada" sortable="true" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="detalleDiagnosticoAlta" index="detalleDiagnosticoAlta" title="Diagnostico de Egreso" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="actions" search="false" fixed="false" width="100" editrules="{edithidden:true}" dataType="html"  index="" title="Acciones" formatter="renderActions"/>								
+								<sjg:gridColumn name="actions" search="false" fixed="false" width="150" editrules="{edithidden:true}" dataType="html"  index="" title="Acciones" formatter="renderActionsIngEgr"/>								
 							</sjg:grid>
 				
 				<h3>Prácticas Ambulatorias</h3>
@@ -112,9 +165,8 @@ if (user == null){ %>
 				    			multiselect="false"
 							>
 								<sjg:gridColumn name="id" index="id" hidden="true" formatter="integer" title="ID Conviviente" sortable="true" editable="true" searchoptions="{sopt:['eq']}"/>
-								<sjg:gridColumn name="paciente" index="apellido" jsonmap="tratamiento.historiaSocial.paciente.nombreCompleto" title="Pacienete" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="fechaPractica" jsonmap="fechaPractica" index="nombres" title="Fecha Práctica" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
-								<sjg:gridColumn name="fechaCarga" jsonmap="fechaCarga" index="vinculo" title="Fecha Carga" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaPractica" jsonmap="fechaPractica" index="nombres"  title="Fecha Práctica" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
+								<sjg:gridColumn name="fechaCarga" jsonmap="fechaCarga" index="vinculo" title="Fecha Carga" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="codigoPractica"  hidden="true" jsonmap="tipoPractica.codigo" editrules="{edithidden:true}" index="obraSocial" title="Obra Social" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="CodigoProblematica" jsonmap="tipoProblematica.codigo" index="nacionalidad" title="Codigo Problematica" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="profesionalCargo " index="educacion" jsonmap="profesional.nombreCompleto" title="Profesional a Cargo" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
@@ -298,14 +350,51 @@ if (user == null){ %>
 			       			+"</div>");
 			}
 			
+			function renderActionsIngEgr(cellvalue, options, rowObject) {
+				
+			    return ("<div style=\"text-align:center\">"
+			            	+"<a class=\"button\" title=\"Ver las prácticas realizadas en este periodo\" href=\"#\" onclick=\"getConviviente("+rowObject["id"]+")\"> <img src=\"images/16x16/ZoomIn.png\"/> <span class=\"text-action\">Ver Prácticas</span> </a>"
+			       			+"</div>");
+			}
+
+			function confirmar () {
+				return confirm("Realmente desea eliminarla?");
+			}
+
+			function renderActionsPracticas(cellvalue, options, rowObject) {
+				console.info(rowObject["id"]);
+				
+			    return ("<div style=\"text-align:center\">"
+			            	+"<a class=\"button\" title=\"Mostrar Detalle\" href=\"visualizarPractica.action?idPractica="+rowObject["id"]+"\"> <img src=\"images/16x16/ZoomIn.png\"> </a>"
+			            	+"<a class=\"button\" title=\"Editar la practica\" href=\"editarPractica.action?idPractica="+rowObject["id"]+"\"> <img src=\"images/16x16/Write2.png\"> </a>"
+			            	+"<a class=\"button\" onclick=\"return confirmar()\" title=\"Eliminar la practica\" href=\"eliminarPractica.action?idPractica="+rowObject["id"]+"\"> <img src=\"images/16x16/Minus.png\"> </a>"
+			       			+"</div>");
+			}
+
+			
 			</script>
-    		
-    	<jsp:include page="../../footer.jsp"/>		
+			
     	</div>
 	
 	
 	<%} %>
+
+   	<jsp:include page="../../footer.jsp"/>		
  
 </body>
+
+<style type="text/css">
+	<!--
+	.ui-jqgrid .ui-jqgrid-bdiv {
+	  position: relative; 
+	  margin: 0em; 
+	  padding:0; 
+	  /*overflow: auto;*/ 
+	  overflow-x:hidden; 
+	  overflow-y:auto; 
+	  text-align:left;
+	}
+	-->
+</style>
 
 </html>	

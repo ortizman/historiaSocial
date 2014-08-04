@@ -149,7 +149,7 @@ margin-top: 4%;
 				    			multiselect="false"
 				    			autowidth="true"
 				    			shrinkToFit="false"
-				    			width="50"
+				    			gridview="true"
 				    			
 							> 
 							
@@ -173,7 +173,7 @@ margin-top: 4%;
 <%-- 								<sjg:gridColumn name="historiaSocial.motivoIntervencionSocial" editoptions="{dataInit: function (element) {$(element).attr('tabindex', 10006) }}" hidden="true" editrules="{edithidden:true}" edittype="textarea"  index="historiaSocial.motivoIntervencionSocial" title="Motivo Intervencion Social" sortable="true" editable="true" formoptions="{rowpos: 2, colpos: 3}" searchoptions="{sopt:['bw','cn']}"/> --%>
 								<sjg:gridColumn name="historiaSocial.tratamientoAmbulatorio.fechaInicio" search="false" jsonmap="historiaSocial.tratamientoAmbulatorio.fechaIngreso" width="110" index="historiaSocial.tratamientoAmbulatorio.fechaInicio" title="Fecha Ing. al Hosp" sortable="true" editable="true" formoptions="{rowpos: 3, colpos: 3}" formatter="date" formatoptions="{newformat : 'd/m/Y', srcformat : 'Y-m-d H:i:s'}" searchoptions="{sopt:['bw','cn']}"/>
 
-								<sjg:gridColumn name="actions" search="false" id="id" fixed="false" width="120" editrules="{edithidden:true}" dataType="html"  index="" title="Acciones" formoptions="{rowpos: 5, colpos: 3}" formatter="renderActions"/>
+								<sjg:gridColumn name="actions" search="false" id="id" fixed="false"  editrules="{edithidden:true}" dataType="html" title="Acciones" formatter="renderActions"/>
 							</sjg:grid>
 						</div>
 						

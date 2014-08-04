@@ -80,6 +80,7 @@
 		<property name="profesionalDAO" ref="profesionalDAO" />
 		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
 		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+		<property name="tratamientoDAO" ref="tratamientoDAO" />
 	</bean>
 
 	<bean id="altaPacienteAction" class="ar.com.historiasocial.actions.PacienteAction"

@@ -46,7 +46,7 @@
 			</result>
 			<result name="input">/login.jsp</result>
 		</action>
-
+		
 		<action name="newSearch" class="newSearchAction">
 			<interceptor-ref name="userStack" />
 			<result name="success">/pages/institucion/InstitucionesCercanas.jsp

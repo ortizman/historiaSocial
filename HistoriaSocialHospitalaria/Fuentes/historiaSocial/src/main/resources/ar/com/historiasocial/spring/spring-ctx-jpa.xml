@@ -78,6 +78,12 @@
   		</constructor-arg>
 	</bean>
 	
+	<bean id="tratamientoDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Tratamiento</value>
+  		</constructor-arg>
+	</bean>
+	
 	<bean id="tipoDeProblematicaDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
 		<constructor-arg>
         	<value>ar.com.historiasocial.entities.TipoDeProblematica</value>
