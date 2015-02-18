@@ -406,7 +406,7 @@ String user = (String)session.getAttribute("user");
 						      }
 						      
 						      if($("input#convEdit").length === 0){
-							      var c=$('<input type="button" style="display: inline;" tabindex="13" name="submit" class="buttonEditConviviente" onclick="editConviviente()" id="convEdit" value="Editar Conviviente" />');
+							      var c=$('<input type="button" style="display: inline;" tabindex="13" name="submit" class="buttonEditConviviente" onclick="editConviviente()" id="convEdit" value="Salvar Los Cambios" />');
 							      $("input#submit_btn").after(c);
 							      $("input#submit_btn").hide();
 						      }

@@ -14,4 +14,5 @@ public class CerrarSesionAction extends ActionSupport {
 		((org.apache.struts2.dispatcher.SessionMap<String, Object>) ActionContext.getContext().getSession()).invalidate();
 		return SUCCESS;
 	}
+	
 }
