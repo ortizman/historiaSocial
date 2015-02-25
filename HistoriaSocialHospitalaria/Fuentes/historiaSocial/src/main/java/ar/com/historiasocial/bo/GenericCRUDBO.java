@@ -9,7 +9,7 @@ import ar.com.historiasocial.dao.Entity;
 import ar.com.historiasocial.entities.Paginador;
 
 /**
- * @author Manuel Ortiz
+ * @author Manuel Ortiz - ortizman@gmail.com
  */
 public interface GenericCRUDBO<T extends Entity> {
 	public T save(T o);

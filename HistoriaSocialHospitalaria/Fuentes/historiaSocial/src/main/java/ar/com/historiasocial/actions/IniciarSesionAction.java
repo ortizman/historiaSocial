@@ -2,7 +2,7 @@ package ar.com.historiasocial.actions;
 
 import java.util.Map;
 
-import ar.com.historiasocial.dao.ProfesionalDAO;
+import ar.com.historiasocial.bo.ProfesionalBO;
 import ar.com.historiasocial.entities.Profesional;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -17,7 +17,7 @@ public class IniciarSesionAction extends ActionSupport {
 	private String				usuario;
 	private String				pass;
 
-	private ProfesionalDAO		profesionalDAO;
+	private ProfesionalBO profesionalBO; 
 
 	public String getUsuario(){
 		return usuario;
@@ -51,7 +51,7 @@ public class IniciarSesionAction extends ActionSupport {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("user");
 		if (user == null) {
-			Profesional prof = getProfesionalDAO().existe(this.getUsuario(), this.getPass());
+			Profesional prof = getProfesionalBO().existe(this.getUsuario(), this.getPass());
 			if (prof != null) {
 				session.put("esDirector", prof.getEsDirector());
 				session.put("user", prof.getUser());
@@ -66,12 +66,12 @@ public class IniciarSesionAction extends ActionSupport {
 		}
 	}
 
-	public ProfesionalDAO getProfesionalDAO(){
-		return profesionalDAO;
+	public ProfesionalBO getProfesionalBO(){
+		return profesionalBO;
 	}
 
-	public void setProfesionalDAO(ProfesionalDAO profesionalDAO){
-		this.profesionalDAO = profesionalDAO;
+	public void setProfesionalBO(ProfesionalBO profesionalBO){
+		this.profesionalBO = profesionalBO;
 	}
 
 }

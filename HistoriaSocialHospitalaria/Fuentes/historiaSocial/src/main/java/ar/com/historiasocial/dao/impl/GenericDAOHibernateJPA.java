@@ -13,16 +13,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.historiasocial.dao.Entity;
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.exceptions.HSDataAccessRuntimeException;
 
-@Transactional
 public class GenericDAOHibernateJPA<T extends Entity> implements
-		GenericDAO<T> {
+		GenericDAO<T> { 
 
 	protected Class<T> persistentClass;
 
@@ -90,7 +88,6 @@ public class GenericDAOHibernateJPA<T extends Entity> implements
 		return this.getEntityManager().find(getPersistentClass(), id);
 	}
 
-	//@Transactional(readOnly = true)
 	@Override
 	public List<T> retrieveAll() {
 		CriteriaQuery<T> q = getEntityManager().getCriteriaBuilder().createQuery(getPersistentClass());

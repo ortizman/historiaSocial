@@ -8,8 +8,7 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/context 
-    http://www.springframework.org/schema/context/spring-context.xsd"
-	default-autowire="byType">
+    http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<tx:annotation-driven  />
 	
@@ -36,10 +35,9 @@
 		scope="prototype">
 		<property name="responsableDAO" ref="responsableDAO" />
 	</bean>
-
 	<bean id="iniciarSesionAction" class="ar.com.historiasocial.actions.IniciarSesionAction"
 		scope="prototype">
-		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="profesionalBO" ref="profesionalBO" />
 	</bean>
 	<bean id="formModificarUsuarioConectadoAction"
 		class="ar.com.historiasocial.actions.FormModificarUsuarioConectadoAction"

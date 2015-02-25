@@ -27,6 +27,7 @@ public class ProfesionalDAOHibernateJPA extends GenericDAOHibernateJPA<Profesion
 	public Profesional existe(String usuario, String pass){
 		Profesional prof = null;
 		try{
+			
 			Query consulta= getEntityManager().createQuery("select p from Profesional p where p.user=? and p.pass=? and p.habilitado=?");
 			consulta.setParameter(1, usuario);
 			consulta.setParameter(2, pass);
