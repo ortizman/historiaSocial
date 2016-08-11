@@ -44,7 +44,7 @@
 <!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://127.8.71.130/tsrv" /> -->
 			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="none" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 
 			<property name="hibernate.connection.provider_class"
 				value="org.hibernate.connection.C3P0ConnectionProvider" />

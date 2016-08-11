@@ -9,7 +9,7 @@
 <script type="text/javascript" src="script/script.js"></script>
 <script src="script/formGrupoConv.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Formulario de alta - Nuevo Conviviente</title>
+<title>Formulario de alta - Nuevo Familiar</title>
 <link rel="stylesheet" href="jquery-ui.css">
 <link href="estilo.css" rel="StyleSheet" type="text/css" id="css" />
 <!-- <link href="structure.css" rel="stylesheet"> -->
@@ -53,7 +53,7 @@ String user = (String)session.getAttribute("user");
     		
 			<div id="tabs" style="font-size: 14px">
 			    <ul>
-			        <li><a href="#fragment-3"><span>Grupo Conviviente</span></a></li>
+			        <li><a href="#fragment-3"><span>Grupo Familiar</span></a></li>
 					<s:set name="jspMenu" value="menu"/>
 			    </ul>
 			<form action="" name="agregarConvivienteForm" id="formConviviente">
@@ -81,7 +81,7 @@ String user = (String)session.getAttribute("user");
 									tabindex="2" onkeyup="" required />
 							</div>
 							<p class="instruct" id="instruct2">
-								<small>Apellido del conviviente</small>
+								<small>Apellido del familiar</small>
 							</p></li>
 						<li id="foli21" class="notranslate"><label class="desc"
 							id="title21" for="Field21"> Nombres <span
@@ -93,7 +93,7 @@ String user = (String)session.getAttribute("user");
 									tabindex="3" onkeyup="" required />
 							</div>
 							<p class="instruct" id="instruct2">
-								<small>Nombre del conviviente</small>
+								<small>Nombre del familiar</small>
 							</p></li>
 						<li id="foli12" class="notranslate       "><label
 							class="desc" id="title12" for="Field12"> V&iacute;nculo </label>
@@ -219,16 +219,16 @@ String user = (String)session.getAttribute("user");
 						</div> <!-- fin div con columna 2 -->
 					</ul>
 					
-					<input type="button" style="display: block;" tabindex="13" name="submit" class="buttonSubConviviente" id="submit_btn" value="Agregar Conviviente" />  
+					<input type="button" style="display: block;" tabindex="13" name="submit" class="buttonSubConviviente" id="submit_btn" value="Agregar Familiar" />  
 					</form>
-							<h3>Listado de Convivientes</h3>
+							<h3>Listado de Familiares</h3>
 					
 							<s:url id="remoteurl" action="datosTablaPersonas" includeParams="get"/>
 							<s:url id="editurl" action="crudConviviente" includeParams="get"/>
 							
 							<sjg:grid	
 								id="gridtableConviviente"
-								caption="Convivientes"
+								caption="Familiares"
 								dataType="json"
 								href="%{remoteurl}"
 								pager="true"
@@ -252,7 +252,7 @@ String user = (String)session.getAttribute("user");
 								editinline="false"
 				    			multiselect="false"
 							>
-								<sjg:gridColumn name="id" index="id" hidden="true" formatter="integer" title="ID Conviviente" sortable="true" editable="true" searchoptions="{sopt:['eq']}"/>
+								<sjg:gridColumn name="id" index="id" hidden="true" formatter="integer" title="ID Familiar" sortable="true" editable="true" searchoptions="{sopt:['eq']}"/>
 								<sjg:gridColumn name="apellido" index="apellido" title="Apellido" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="nombres" index="nombres" title="Nombre" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
 								<sjg:gridColumn name="vinculo" index="vinculo" title="Vinculo" sortable="true" editable="true" searchoptions="{sopt:['bw','cn']}"/>
@@ -414,7 +414,7 @@ String user = (String)session.getAttribute("user");
 						  }
 					  },
 					  error: function(){
-						  alert("Se produjo un error al intentar editar el conviviente");
+						  alert("Se produjo un error al intentar editar el familiar");
 					  }
 					});
 				
