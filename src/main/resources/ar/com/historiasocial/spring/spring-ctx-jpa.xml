@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd"
+	default-autowire="byType">
+
+	<tx:annotation-driven />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="historiaSocial" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+<!-- inicio Definicion de los DAOs -->
+	<bean id="domicilioDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Domicilio</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="especialidadDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Especialidad</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="historiaClinicaDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.HistoriaClinica</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean class="ar.com.historiasocial.dao.impl.HistoriaSocialDAOHibernateJPA" id="historiaSocialDAO" />
+	<bean class="ar.com.historiasocial.dao.impl.InstitucionDAOHibernateJPA" id="institucionDAO" />
+	
+	<bean id="institutionTypeDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.InstitutionType</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean class="ar.com.historiasocial.dao.impl.PersonaDAOHibernateJPA" id="personaDAO" />
+	
+	<bean class="ar.com.historiasocial.dao.impl.PacienteDAOHibernateJPA" id="pacienteDAO">
+		<property name="personaDAO" ref="personaDAO" />	
+	</bean>
+	
+	<bean class="ar.com.historiasocial.dao.impl.PracticaDAOHibernateJPA" id="practicaDAO" />
+	
+	<bean class="ar.com.historiasocial.dao.impl.ProfesionalDAOHibernateJPA" id="profesionalDAO" />
+	
+	<bean id="responsableDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.InstitutionResponsible</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="servicioDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Servicio</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="tipoDePracticaDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.TipoDePractica</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="tratamientoDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Tratamiento</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="tipoDeProblematicaDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.TipoDeProblematica</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="tipoInstitucionDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.InstitutionType</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="viviendaDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Vivienda</value>
+  		</constructor-arg>
+	</bean>
+	<bean id="convivienteDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Conviviente</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="condicionHabitacionalDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.CondicionHabitacional</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="diagnosticoDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.Diagnostico</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="obraSocialDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.ObraSocial</value>
+  		</constructor-arg>
+	</bean>
+	
+	<bean id="tipoPropiedadDAO" class="ar.com.historiasocial.dao.impl.GenericDAOHibernateJPA">
+		<constructor-arg>
+        	<value>ar.com.historiasocial.entities.TipoPropiedad</value>
+  		</constructor-arg>
+	</bean>
+	
+<!-- Fin Definicion de los DAOs -->	
+
+<!-- Expongo MBean de Hibernate para ver las estadisticas -->
+<!-- <jee:jndi-lookup id="server" jndi-name="java:comp/env/jmx" /> -->
+
+<bean id="MBeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+    <property name="locateExistingServerIfPossible" value="true" />
+</bean>
+
+<jee:jndi-lookup id="hibernateSessionFactory" jndi-name="SessionFactory" />
+
+<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService">
+   <property name="statisticsEnabled" value="true" />
+   <property name="sessionFactory" ref="hibernateSessionFactory"/>
+</bean>
+
+<bean class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+   <property name="server" ref="MBeanServer" />
+   <property name="beans">
+      <map>
+        <entry key="Hibernate:name=statistics" value-ref="hibernateStatistics"/>
+      </map>
+   </property>
+</bean>
+
+</beans>

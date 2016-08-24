@@ -1,0 +1,86 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	<persistence-unit name="historiaSocial">
+		<!-- <provider>org.hibernate.connection.C3P0ConnectionProvider</provider> -->
+		<!-- <non-jta-data-source>java:comp/env/jdbc/hospital</non-jta-data-source> -->
+		<class>ar.com.historiasocial.entities.Domicilio</class>
+		<class>ar.com.historiasocial.entities.Especialidad</class>
+		<class>ar.com.historiasocial.entities.HistoriaClinica</class>
+		<class>ar.com.historiasocial.entities.Tratamiento</class>
+		<class>ar.com.historiasocial.entities.HistoriaSocial</class>
+		<class>ar.com.historiasocial.entities.Institucion</class>
+		<class>ar.com.historiasocial.entities.Paciente</class>
+		<class>ar.com.historiasocial.entities.Persona</class>
+		<class>ar.com.historiasocial.entities.Conviviente</class>
+		<class>ar.com.historiasocial.entities.Practica</class>
+		<class>ar.com.historiasocial.entities.Profesional</class>
+		<class>ar.com.historiasocial.entities.Servicio</class>
+		<class>ar.com.historiasocial.entities.TipoDePractica</class>
+		<class>ar.com.historiasocial.entities.TipoDeProblematica</class>
+		<class>ar.com.historiasocial.entities.Vivienda</class>
+		<class>ar.com.historiasocial.entities.Location</class>
+		<class>ar.com.historiasocial.entities.InstitutionResponsible</class>
+		<class>ar.com.historiasocial.entities.InstitutionType</class>
+		<class>ar.com.historiasocial.entities.Diagnostico</class>
+		<class>ar.com.historiasocial.entities.TipoPropiedad</class>
+		<class>ar.com.historiasocial.entities.CondicionHabitacional</class>
+		<class>ar.com.historiasocial.entities.Nacionalidad</class>
+		<class>ar.com.historiasocial.entities.ObraSocial</class>
+
+
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			
+			<property name="hibernate.connection.username" value="historia" />
+			<property name="hibernate.connection.password" value="historia" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
+			
+<!-- 			<property name="hibernate.connection.username" value="adminiyf734v" /> -->
+<!-- 			<property name="hibernate.connection.password" value="g2fhVG9-PBJG" /> -->
+<!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://127.8.71.130/tsrv" /> -->
+			
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+			<property name="hibernate.connection.provider_class"
+				value="org.hibernate.connection.C3P0ConnectionProvider" />
+
+			<property name="hibernate.connection.pool_size" value="5" />
+			<property name="hibernate.current_session_context_class"
+				value="thread" />
+
+			<!-- 2nd level cache -->
+			<property name="hibernate.cache.provider_class"
+				value="net.sf.ehcache.hibernate.SingletonEhCacheProvider" />
+			<property name="net.sf.ehcache.configurationResourceName"
+				value="/ehcache.xml" />
+			<property name="hibernate.cache.use_query_cache" value="true" />
+			<property name="hibernate.cache.use_second_level_cache"
+				value="true" />
+			<property name="hibernate.generate_statistics" value="false" />
+			
+			<property name="hibernate.session_factory_name" value="SessionFactory" />
+
+			<!-- Transaction isolation 2 = READ_COMMITTED -->
+			<property name="hibernate.connection.isolation" value="2" />
+			<property name="hibernate.connection.autocommit" value="true" />
+
+			<!-- configuration pool via c3p0 -->
+			<property name="hibernate.c3p0.min_size" value="5" />
+			<property name="hibernate.c3p0.max_size" value="10" />
+			<property name="hibernate.c3p0.acquire_increment" value="1" />
+			<property name="hibernate.c3p0.idle_test_period" value="300" /> <!-- seconds -->
+			<property name="hibernate.c3p0.timeout" value="900" /> <!-- seconds -->
+			<property name="hibernate.c3p0.max_statements" value="500" />
+			
+			<!-- Al ser JDBC4 usa el metodo isValid() para testear la coneccion -->
+			<!--property name="hibernate.c3p0.preferredTestQuery" value="select 1;" /-->
+
+
+		</properties>
+	</persistence-unit>
+</persistence>
