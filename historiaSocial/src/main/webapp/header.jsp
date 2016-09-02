@@ -21,9 +21,21 @@ $(function(){
 });
 </script>
 
+<style>
+<!--
+	.prueba {
+		background-color:darkorange; 
+		padding-bottom: 10px; 
+		padding-top: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+-->
+</style>
 
 <div id="header" class="headerLogin"> 
 		<div id="tituloHeader">
+			<a class="prueba">¡Prueba!</a>| 
 			<a href="menu"> <s:text name="header.aplicationName"/> </a>
 		</div>
 		<div id="botonesHeader">
