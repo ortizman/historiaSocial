@@ -123,18 +123,11 @@ form label {
 				<p>
 				
 					<label title="Introdusca las priemas letras del apellidos del paciente" for="query">Paciente: </label>
-					<input title="Introdusca las priemas letras del apellidos del paciente" type="text" name="query" id="paciente" size="35" value="${nombrePaciente}"/>
+					<input title="Introdusca las priemas letras del apellidos del paciente" type="text" name="query" id="paciente" size="35" value="${nombrePaciente}"/> 
+					<i>Introdusca las priemas letras del apellido del paciente</i>
 					
 				<input name="idPaciente" type="hidden" id="pacienteId" value="${idPaciente}"/>
-				
-<%-- 				<s:select  --%>
-<%-- 					label="Paciente"  --%>
-<%-- 					id ="paciente" --%>
-<%-- 					list="pacientes"  --%>
-<%-- 					name="idPaciente"  --%>
-<%-- 					listKey="id" --%>
-<%--        				listValue="nombreCompleto"  --%>
-<%-- 					value='%{practica.historiaSocial.paciente.{id}}'/> --%>
+
 				
 				</p>					
 				<p>
