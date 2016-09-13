@@ -12,8 +12,10 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import ar.com.historiasocial.dao.PacienteDAO;
+import ar.com.historiasocial.dao.PersonaDAO;
 import ar.com.historiasocial.entities.Paciente;
 import ar.com.historiasocial.entities.Paginador;
+import ar.com.historiasocial.entities.Persona;
 
 @ParentPackage(value = "default")
 @InterceptorRefs({ @InterceptorRef("mylogging"), @InterceptorRef("userStack") })
@@ -27,6 +29,8 @@ public class ListPacientesAction extends ListJQGridAction {
 	private String				query;
 
 	private PacienteDAO			pacienteDAO;
+	
+	private PersonaDAO			personaDAO;
 
 	public void setCantPags(int cantPags){
 		this.cantPags = cantPags;
@@ -76,15 +80,45 @@ public class ListPacientesAction extends ListJQGridAction {
 			"includeProperties",
 			"^suggestions\\[\\d+\\]\\.value, "
 			+ "^suggestions\\[\\d+\\]\\.data, "
-			+ "^suggestions\\[\\d+\\]\\.paciente\\.id , ^suggestions\\[\\d+\\]\\.paciente\\.nombres, ^suggestions\\[\\d+\\]\\.paciente\\.apellidos, "
-			+ "^suggestions\\[\\d+\\]\\.paciente\\.documento, ^suggestions\\[\\d+\\]\\.paciente\\.fechaNacimiento"
-	}) }) })
+			+ "^suggestions\\[\\d+\\]\\.id , ^suggestions\\[\\d+\\]\\.nombres, ^suggestions\\[\\d+\\]\\.apellidos, "
+			+ "^suggestions\\[\\d+\\]\\.documento, ^suggestions\\[\\d+\\]\\.fechaNacimiento"
+			}) }) })
 	public String autocomplete(){
 		
 		if(!StringUtils.isEmpty(query)){
 			List<Paciente> pacientes = getPacienteDAO().search(query);
+
+			suggestions = new ArrayList<PacienteResponseAutoComplete>();
+
+			for (Paciente pa : pacientes) {
+				suggestions.add(new PacienteResponseAutoComplete(pa));
+			}
+			
+		}
+		
+		
+		return SUCCESS;
+	}
+	
+	@Actions({ @Action(value = "/convivienteAutoComplete", results = { @Result(type = "json", name = "success", params={
+			"includeProperties",
+			"^suggestions\\[\\d+\\]\\.value, "
+			+ "^suggestions\\[\\d+\\]\\.data, "
+			+ "^suggestions\\[\\d+\\]\\.id , ^suggestions\\[\\d+\\]\\.nombres, ^suggestions\\[\\d+\\]\\.apellidos, "
+			+ "^suggestions\\[\\d+\\]\\.documento, ^suggestions\\[\\d+\\]\\.fechaNacimiento"
+	}) }) })
+	public String autocompleteConviviente(){
+		
+		if(!StringUtils.isEmpty(query)){
+			List<Paciente> pacientes = getPacienteDAO().search(query);
+			List<Persona> personas = personaDAO.search(query);
+			
 			suggestions = new ArrayList<PacienteResponseAutoComplete>();
 			for (Paciente pa : pacientes) {
+				suggestions.add(new PacienteResponseAutoComplete(pa));
+			}
+			
+			for (Persona pa : personas) {
 				suggestions.add(new PacienteResponseAutoComplete(pa));
 			}
 		}
@@ -129,25 +163,36 @@ public class ListPacientesAction extends ListJQGridAction {
 		this.query = query;
 	}
 	
+	public void setPersonaDAO(PersonaDAO personaDAO) {
+		this.personaDAO = personaDAO;
+	}
+	
 	public class PacienteResponseAutoComplete {
 	
 		private String value;
 		private String data;
-		private Paciente paciente;
+		private String nombres;
+		private String apellidos;
+		private String documento;
+		private String fechaNacimiento;
 		
 		
 		public PacienteResponseAutoComplete(Paciente pa) {
 			this.value = pa.getNombreCompleto() + ". DNI: " + pa.getDocumento();
 			this.data = pa.getId().toString();
-			this.paciente = pa;
+			this.nombres = pa.getNombres();
+			this.apellidos = pa.getApellidos();
+			this.documento = pa.getDocumento();
+			this.fechaNacimiento = this.getFechaNacimiento();
 		}
 		
-		public Paciente getPaciente() {
-			return paciente;
-		}
-		
-		public void setPaciente(Paciente paciente) {
-			this.paciente = paciente;
+		public PacienteResponseAutoComplete(Persona pa) {
+			this.value = pa.getApellido() + ", " + pa.getNombres() + ". DNI: -";
+			this.data = pa.getId().toString();
+			this.nombres = pa.getNombres();
+			this.apellidos = pa.getApellido();
+			this.documento = "";
+			this.fechaNacimiento = this.getFechaNacimiento();
 		}
 		
 		/**
@@ -174,6 +219,38 @@ public class ListPacientesAction extends ListJQGridAction {
 		 */
 		public void setData(String data){
 			this.data = data;
+		}
+
+		public String getApellidos() {
+			return apellidos;
+		}
+
+		public void setApellidos(String apellidos) {
+			this.apellidos = apellidos;
+		}
+
+		public String getDocumento() {
+			return documento;
+		}
+
+		public void setDocumento(String documento) {
+			this.documento = documento;
+		}
+
+		public String getFechaNacimiento() {
+			return fechaNacimiento;
+		}
+
+		public void setFechaNacimiento(String fechaNacimiento) {
+			this.fechaNacimiento = fechaNacimiento;
+		}
+		
+		public void setNombres(String nombres) {
+			this.nombres = nombres;
+		}
+		
+		public String getNombres() {
+			return nombres;
 		}
 		
 		

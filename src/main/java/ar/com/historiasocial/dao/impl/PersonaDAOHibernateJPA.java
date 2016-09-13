@@ -62,4 +62,16 @@ public class PersonaDAOHibernateJPA extends GenericDAOHibernateJPA<Persona> impl
 
 		return resultado;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Persona> search(String term) {
+		term = term + "%";
+		Query searchPersona = getEntityManager().createQuery("select c from Conviviente c where c.apellido LIKE :text");
+		searchPersona.setParameter("text", term);
+		searchPersona.setFirstResult(0);
+		searchPersona.setMaxResults(50);
+		
+		return searchPersona.getResultList();
+	}
 }
