@@ -8,9 +8,6 @@ import java.util.List;
 import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.entities.Persona;
 /**
-asdasd
- */
-/**
  * @author Manuel Ortiz - ortizman@gmail.com
  *
  */
@@ -31,5 +28,12 @@ public interface PersonaDAO extends GenericDAO<Persona>{
 	 * @return La lista de personas paginadas, por id de praciente. Ordenadas por column
 	 */
 	List<Persona> retrievePaged(Paginador paginador, String column, String order, Long idPaciente);
+
+	/**
+	 * Busca una persona por apellido
+	 * @param query
+	 * @return
+	 */
+	List<Persona> search(String query);
 
 }

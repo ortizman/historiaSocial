@@ -121,6 +121,7 @@
 	<bean id="listPacientesAction" class="ar.com.historiasocial.actions.ListPacientesAction"
 		scope="prototype">
 		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="personaDAO" ref="personaDAO" />
 	</bean>
 
 	<bean id="listProfesionalesAction" class="ar.com.historiasocial.actions.ListProfesionalesAction"

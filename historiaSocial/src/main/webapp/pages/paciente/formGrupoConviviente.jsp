@@ -277,16 +277,16 @@ String user = (String)session.getAttribute("user");
 			<script type="text/javascript" src="script/jquery.autocomplete.min.js"></script>
 			<script type="text/javascript">
 					$('#queryAutocomple').autocomplete({
-						serviceUrl : 'pacienteAutoComplete',
+						serviceUrl : 'convivienteAutoComplete',
 						onSelect : function(suggestion){
 							
 							    var today = new Date();
-							    var birthDate = new Date(suggestion.paciente.fechaNacimiento);
+							    var birthDate = new Date(suggestion.fechaNacimiento);
 							
-						      $("input#nombres").val(suggestion.paciente.nombres);
+						      $("input#nombres").val(suggestion.nombres);
 						      $("input#edad").val(today.getFullYear() - birthDate.getFullYear());  
-						      $("input#queryAutocomple").val(suggestion.paciente.apellidos);
-						      $("input#familiarId").val(suggestion.paciente.id);
+						      $("input#queryAutocomple").val(suggestion.apellidos);
+						      $("input#familiarId").val(suggestion.id);
 						      
 					},
 	
