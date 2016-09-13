@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>     
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC>
 <html>
 <head>
 <script type="text/javascript" src="script/script.js"></script>
@@ -67,22 +67,24 @@ String user = (String)session.getAttribute("user");
 						<li id="foli1" class="notranslate"><label class="desc"
 							id="title1" for="Field1"> Nro </label>
 							<div>
-								<input id="nro" name="nro" type="text"
-									class="field text medium" value="" maxlength="255" tabindex="1" 
-									onkeyup="" />
+							<input id="nro" name="nro" type="text"
+								class="field text medium" value="" maxlength="255" tabindex="1" 
+								onkeyup="" />
 							</div></li>
 						<li id="foli2" class="notranslate"><label class="desc"
 							id="title2" for="Field2"> Apellido <span
 								id="req_2" class="req">*</span>
 						</label>
 							<div>
-								<input id="apellido" name="apellido" type="text"
-									class="field text medium" value="" maxlength="255"
-									tabindex="2" onkeyup="" required />
+							
+						<input alt="Introdusca las priemas letras del apellidos del paciente" 
+						type="text" name="query" id="queryAutocomple" class="medium" value="${nombrePaciente}" placeholder="autocompletado por apellido" /> 
+					
+						<input id="apellido" name="apellido" type="hidden"/>
+						<input id="familiarId" name="familiarId" type="hidden"/>
+								
 							</div>
-							<p class="instruct" id="instruct2">
-								<small>Apellido del familiar</small>
-							</p></li>
+						</li>
 						<li id="foli21" class="notranslate"><label class="desc"
 							id="title21" for="Field21"> Nombres <span
 								id="req_21" class="req">*</span>
@@ -92,18 +94,18 @@ String user = (String)session.getAttribute("user");
 									class="field text medium" value="" maxlength="255"
 									tabindex="3" onkeyup="" required />
 							</div>
-							<p class="instruct" id="instruct2">
-								<small>Nombre del familiar</small>
-							</p></li>
+						</li>
 						<li id="foli12" class="notranslate       "><label
 							class="desc" id="title12" for="Field12"> V&iacute;nculo </label>
 							<div>
 								<select id="vinculo" name="vinculo" class="field select medium"
-									tabindex="4">
+									tabindex="4" placeholder="ads">
+									<optgroup label="Familiares Directos">
 									<option value="Madre" selected="selected">Madre</option>
 									<option value="Padre">Padre</option>
 									<option value="Hermano">Hermano</option>
 									<option value="Hermano">Hermana</option>
+									</optgroup>
 									<option value="Padrino">Padrino</option>
 									<option value="Madrina">Madrina	</option>
 									<option value="Abuelo">Abuelo</option>
@@ -272,6 +274,30 @@ String user = (String)session.getAttribute("user");
 				<hr />
 			</div>
 			 
+			<script type="text/javascript" src="script/jquery.autocomplete.min.js"></script>
+			<script type="text/javascript">
+					$('#queryAutocomple').autocomplete({
+						serviceUrl : 'pacienteAutoComplete',
+						onSelect : function(suggestion){
+							
+							    var today = new Date();
+							    var birthDate = new Date(suggestion.paciente.fechaNacimiento);
+							
+						      $("input#nombres").val(suggestion.paciente.nombres);
+						      $("input#edad").val(today.getFullYear() - birthDate.getFullYear());  
+						      $("input#queryAutocomple").val(suggestion.paciente.apellidos);
+						      $("input#familiarId").val(suggestion.paciente.id);
+						      
+					},
+	
+					autoSelectFirst: true,
+					
+					minChars: 3,
+	
+					deferRequestBy: 300
+				
+				});
+			</script>
 			<script>
 			$( "#tabs" ).tabs();
 			$(".datepicker").datepicker({
@@ -291,10 +317,11 @@ String user = (String)session.getAttribute("user");
 			function editConviviente() {  
 			    // validate and process form here 
 			      var idConv = $("input#idConviviente").val();
+			      var familiarId = $("input#familiarId").val();
 			      var nombresVal = $("input#nombres").val();
 			      var nroVal = $("input#nro").val(); 			    
 			      var edadVal = $("input#edad").val();  
-			      var apellidoVal = $("input#apellido").val();
+			      var apellidoVal = $("input#queryAutocomple").val();
 			      var vinculoVal = $("select#vinculo").val();
 			      var nacionalidadVal = $("select#nacionalidad").val();
 			      var estadoCivilVal = $("select#estadoCivil").val();
@@ -317,7 +344,8 @@ String user = (String)session.getAttribute("user");
 			      				   '&ocupacion=' + ocupacionVal + 
 			      				   '&obraSocial.id=' + obraSocialVal +
 			      				   '&convive=' + $(".convive").is(":checked") +			      				   
-			      				   '&ingresos=' + ingresosVal;
+			      				   '&ingresos=' + ingresosVal +
+			      				   '&familiarId=' + familiarId;
 			      
 			      $.ajax({
 			    	  type: "POST",  
@@ -336,9 +364,10 @@ String user = (String)session.getAttribute("user");
 			$(".buttonSubConviviente").click(function() {  
 			    // validate and process form here  
 			      var nombresVal = $("input#nombres").val();
+			      var familiarId = $("input#familiarId").val();
 			      var nroVal = $("input#nro").val(); 			    
 			      var edadVal = $("input#edad").val();  
-			      var apellidoVal = $("input#apellido").val();
+			      var apellidoVal = $("input#queryAutocomple").val();
 			      var vinculoVal = $("select#vinculo").val();
 			      var nacionalidadVal = $("select#nacionalidad").val();
 			      var estadoCivilVal = $("select#estadoCivil").val();
@@ -362,7 +391,8 @@ String user = (String)session.getAttribute("user");
 			      				   '&ocupacion=' + ocupacionVal + 
 			      				   '&obraSocial.id=' + obraSocialVal +
 			      				   '&convive=' + $(".convive").is(":checked") +			      				   
-			      				   '&ingresos=' + ingresosVal;
+			      				   '&ingresos=' + ingresosVal + 
+			      				   '&familiarId=' + familiarId;
 			      
 			      $.ajax({
 			    	  type: "POST",  
@@ -389,7 +419,7 @@ String user = (String)session.getAttribute("user");
 						      $("input#nombres").val(conv.nombres);
 						      $("input#nro").val(conv.nro); 			    
 						      $("input#edad").val(conv.edad);  
-						      $("input#apellido").val(conv.apellido);
+						      $("input#queryAutocomple").val(conv.apellido);
 						      $("select#vinculo").val(conv.vinculo);
 						      $("select#nacionalidad").val(conv.nacionalidad);
 						      $("select#estadoCivil").val(conv.estadoCivil);
@@ -399,6 +429,7 @@ String user = (String)session.getAttribute("user");
 						      $("select#ingresos").val(conv.ingresos);
 						      $("input#convive").prop('checked', conv.convive);
 						      $("input#idConviviente").val(conv.id);
+						      
 						      
 						      if($("input#convCancel").length === 0){ 
 							      var r=$('<input type="button" id="convCancel" value="Cancel" onclick="reseteo()" style="display: inline;" />');

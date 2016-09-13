@@ -74,7 +74,10 @@ public class ListPacientesAction extends ListJQGridAction {
 
 	@Actions({ @Action(value = "/pacienteAutoComplete", results = { @Result(type = "json", name = "success", params={
 			"includeProperties",
-			"^suggestions\\[\\d+\\]\\.value, ^suggestions\\[\\d+\\]\\.data" 
+			"^suggestions\\[\\d+\\]\\.value, "
+			+ "^suggestions\\[\\d+\\]\\.data, "
+			+ "^suggestions\\[\\d+\\]\\.paciente\\.id , ^suggestions\\[\\d+\\]\\.paciente\\.nombres, ^suggestions\\[\\d+\\]\\.paciente\\.apellidos, "
+			+ "^suggestions\\[\\d+\\]\\.paciente\\.documento, ^suggestions\\[\\d+\\]\\.paciente\\.fechaNacimiento"
 	}) }) })
 	public String autocomplete(){
 		
@@ -82,7 +85,7 @@ public class ListPacientesAction extends ListJQGridAction {
 			List<Paciente> pacientes = getPacienteDAO().search(query);
 			suggestions = new ArrayList<PacienteResponseAutoComplete>();
 			for (Paciente pa : pacientes) {
-				suggestions.add(new PacienteResponseAutoComplete(pa.getNombreCompleto() + ". DNI: " + pa.getDocumento() , pa.getId().toString()));
+				suggestions.add(new PacienteResponseAutoComplete(pa));
 			}
 		}
 		
@@ -130,11 +133,21 @@ public class ListPacientesAction extends ListJQGridAction {
 	
 		private String value;
 		private String data;
+		private Paciente paciente;
 		
 		
-		public PacienteResponseAutoComplete(String value, String data) {
-			this.value = value;
-			this.data = data;
+		public PacienteResponseAutoComplete(Paciente pa) {
+			this.value = pa.getNombreCompleto() + ". DNI: " + pa.getDocumento();
+			this.data = pa.getId().toString();
+			this.paciente = pa;
+		}
+		
+		public Paciente getPaciente() {
+			return paciente;
+		}
+		
+		public void setPaciente(Paciente paciente) {
+			this.paciente = paciente;
 		}
 		
 		/**
