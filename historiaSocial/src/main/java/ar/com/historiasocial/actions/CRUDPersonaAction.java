@@ -20,6 +20,7 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 	private Conviviente				conviviente			= new Conviviente();
 	private String					mensaje;
 	private Long					idPaciente;
+	private String					dniError;
 
 	private String					oper;
 
@@ -53,10 +54,12 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 	 */
 	public String salvarConviviente(){
 		Conviviente p = this.getModel();
+		this.setObrasSociales(getObraSocialDAO().retrieveAll());
 		try {
 			pacienteDAO.agregarConviviente(p, idPaciente);
-			this.setObrasSociales(getObraSocialDAO().retrieveAll());
+			this.setDniError("");
 		} catch (Exception e) {
+			this.setDniError("ERROR: Ya exite una persona con este mismo número de documento (DNI duplicado)");
 			return ERROR;
 		}
 
@@ -65,10 +68,12 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 	
 	public String editarConviviente(){
 		Conviviente conv = this.getModel();
+		this.setObrasSociales(getObraSocialDAO().retrieveAll());
 		try {
 			pacienteDAO.editarConviviente(conv);
-			this.setObrasSociales(getObraSocialDAO().retrieveAll());
+			this.setDniError("");
 		} catch (Exception e) {
+			this.setDniError("ERROR: Ya exite una persona con este mismo número de documento (DNI duplicado)");
 			return ERROR;
 		}
 
@@ -173,6 +178,14 @@ public class CRUDPersonaAction extends ActionSupport implements ModelDriven<Conv
 	 */
 	public void setObraSocialDAO(GenericDAO<ObraSocial> obraSocialDAO){
 		this.obraSocialDAO = obraSocialDAO;
+	}
+
+	public String getDniError() {
+		return dniError;
+	}
+
+	public void setDniError(String dniError) {
+		this.dniError = dniError;
 	}
 
 }

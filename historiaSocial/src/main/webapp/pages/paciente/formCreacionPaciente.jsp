@@ -126,14 +126,19 @@ $(function(){
 				<div id="fragment-1">
 					<div>
 						<s:hidden name="paciente.id" value="%{paciente.id}" />
-					 	<s:textfield name="paciente.apellidos" key="Apellidos" label="Apellidos*" size="35" value="%{paciente.apellidos}"/>
-					 	<s:textfield name="paciente.nombres" label="Nombres*" key="Nombres" size="35" value="%{paciente.nombres}"/>
-						<s:textfield name="paciente.documento" key="DNI" size="35" value="%{paciente.documento}" />
+					 	<s:textfield name="paciente.apellidos" key="Apellidos" label="Apellidos" size="35" value="%{paciente.apellidos}" requiredLabel="true"/>
+					 	<s:textfield name="paciente.nombres" label="Nombres" key="Nombres" size="35" value="%{paciente.nombres}" requiredLabel="true"/>
+						
+						<div style="display: block;">
+						<s:fielderror fieldName="paciente.documento"/>
+						<s:textfield name="paciente.documento" key="Numero de DNI" size="10" maxlength="8" value="%{paciente.documento}" /> 
+						<i>Ingrese el numero de documento <strong>sin puntos</strong>. Ejemplo: 54321012</i>
+						</div>
 						<div class="radio">
-							<s:radio name="paciente.sexo" label="Sexo*" key="Sexo" list="#{'Masculino':'Masculino', 'Femenino':'Femenino'}"></s:radio>
+							<s:radio name="paciente.sexo" label="Sexo" key="Sexo" list="#{'Masculino':'Masculino', 'Femenino':'Femenino'}" requiredLabel="true"></s:radio>
 						</div>	
 						<div class="date">
-							<s:textfield cssClass="datepicker" name="paciente.fechaNacimiento" label="Fecha de Nacimiento*" key="Fecha de Nacimiento" size="30" value="%{paciente.fechaNacimiento}"/>
+							<s:textfield cssClass="datepicker" name="paciente.fechaNacimiento" label="Fecha de Nacimiento*" key="Fecha de Nacimiento" size="30" value="%{paciente.fechaNacimiento}" requiredLabel="true"/>
 						</div>
 						<label class="label">Edad: </label> <span id="paciente_edad_value" class="inputData_edad">Calculo automatico de la edad...</span>
 						<s:textfield cssClass="datepicker" name="paciente.fechaInicioServSocial" label="Fecha de inicio de Servicio Social" key="Fecha de inicio de Servicio Social" size="30" value="%{paciente.fechaInicioServSocial}"/>

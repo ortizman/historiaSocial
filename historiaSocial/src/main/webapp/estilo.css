@@ -771,6 +771,13 @@ select {
 	background-color: white;
 }
 
+.titleImportant {
+	border-style: groove;
+    color: grey;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 /* Boton para sumar paciente Paciente */
 .buttonImportan {
 	text-align: right;

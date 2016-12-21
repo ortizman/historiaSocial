@@ -35,7 +35,7 @@ $(function(){
 
 <div id="header" class="headerLogin"> 
 		<div id="tituloHeader">
-			<a class="prueba">¡Prueba!</a>| 
+		<!-- <a class="prueba">¡Prueba!</a>| --> 
 			<a href="menu"> <s:text name="header.aplicationName"/> </a>
 		</div>
 		<div id="botonesHeader">

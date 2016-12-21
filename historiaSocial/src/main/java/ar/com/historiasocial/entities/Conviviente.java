@@ -3,12 +3,14 @@ package ar.com.historiasocial.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 /**
  * La Plata - Buenos Aires - Argentina 
@@ -31,6 +33,10 @@ public class Conviviente extends Persona {
 	
 	private String nro;
 	
+	@Index(name="idx_dni_conviviente")
+	@Column(nullable=true, unique=true)
+	private Long documento;
+	
 	public Set<Paciente> getPacientes() {
 		return pacientes;
 	}
@@ -45,5 +51,13 @@ public class Conviviente extends Persona {
 
 	public void setNro(String nro) {
 		this.nro = nro;
+	}
+
+	public Long getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Long documento) {
+		this.documento = documento;
 	}
 }

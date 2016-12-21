@@ -610,15 +610,22 @@
 			class="crudPersonaAction">
 			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
 			<result name="input">/login.jsp</result>
-			<result name="error">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="error" type="json">
+				<param name="statusCode">400</param>
+				<param name="errorCode">10001</param>
+				<param name="excludeProperties">^pacientes</param>
+			</result>
 		</action>
 		
 		<action name="editConviviente" method="editarConviviente"
 			class="crudPersonaAction">
 			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
 			<result name="input">/login.jsp</result>
-			<result name="error">/pages/paciente/formGrupoConviviente.jsp</result>
-		</action>		
+			<result name="error" type="json">
+				<param name="statusCode">400</param>
+				<param name="errorCode">10001</param>
+				<param name="excludeProperties">^pacientes</param>
+			</result>		</action>		
 
 		<action name="crudConviviente" method="operConviviente" class="crudPersonaAction">
 			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>

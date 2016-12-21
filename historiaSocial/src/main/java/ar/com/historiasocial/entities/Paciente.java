@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -38,7 +39,10 @@ public class Paciente implements ar.com.historiasocial.dao.Entity{
 	private Long id;
 	private String apellidos;
 	private String nombres;
+	
+	@Index(name="idx_dni")
 	private String documento;
+	
 	private String sexo;
 	@Column(columnDefinition="date")
 	private Date fechaNacimiento;

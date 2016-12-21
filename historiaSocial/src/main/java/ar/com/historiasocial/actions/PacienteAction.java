@@ -3,6 +3,8 @@ package ar.com.historiasocial.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -26,28 +28,28 @@ public class PacienteAction extends ActionSupport {
 	/**
 	 * Serial generado automaticamente
 	 */
-	private static final long					serialVersionUID			= 5381661846802129041L;
+	private static final long serialVersionUID = 5381661846802129041L;
 
-	private Paciente							paciente					= new Paciente();
+	private Paciente paciente = new Paciente();
 
-	private PacienteDAO							pacienteDAO;
-	private GenericDAO<Domicilio>				domicilioDAO;
-	private GenericDAO<Vivienda>				viviendaDAO;
-	private GenericDAO<CondicionHabitacional>	habitacionalDAO;
-	private GenericDAO<TipoPropiedad>			tipoPropiedadDAO;
-	private InstitucionDAO						institucionDAO;
-	private HistoriaSocialDAO					historiaSocialDAO;
-	private String								oper						= "";
-	private String								submitAction				= "";
+	private PacienteDAO pacienteDAO;
+	private GenericDAO<Domicilio> domicilioDAO;
+	private GenericDAO<Vivienda> viviendaDAO;
+	private GenericDAO<CondicionHabitacional> habitacionalDAO;
+	private GenericDAO<TipoPropiedad> tipoPropiedadDAO;
+	private InstitucionDAO institucionDAO;
+	private HistoriaSocialDAO historiaSocialDAO;
+	private String oper = "";
+	private String submitAction = "";
 
-	private List<CondicionHabitacional>			condicionesHabitacionales	= new ArrayList<CondicionHabitacional>();
-	private List<TipoPropiedad>					tipoDePropiedades			= new ArrayList<TipoPropiedad>();
-	private List<Institucion>					instituciones				= new ArrayList<Institucion>();
+	private List<CondicionHabitacional> condicionesHabitacionales = new ArrayList<CondicionHabitacional>();
+	private List<TipoPropiedad> tipoDePropiedades = new ArrayList<TipoPropiedad>();
+	private List<Institucion> instituciones = new ArrayList<Institucion>();
 
-	private static final Logger	LOGGER	= Logger.getLogger(PacienteAction.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(PacienteAction.class);
+
 	@SkipValidation
-	public String creacionPaciente() throws HSControllerException{
+	public String creacionPaciente() throws HSControllerException {
 		this.setPaciente(new Paciente());
 
 		this.setOper("create");
@@ -61,10 +63,12 @@ public class PacienteAction extends ActionSupport {
 	}
 
 	@SkipValidation
-	public String visualizarPaciente() throws HSControllerException{
+	public String visualizarPaciente() throws HSControllerException {
 		Long pacienteId = this.getPaciente().getId();
 		Paciente p = pacienteDAO.retrieveById(pacienteId);
-		if (p == null) { return ERROR; }
+		if (p == null) {
+			return ERROR;
+		}
 
 		this.setOper("view");
 		this.setSubmitAction("#");
@@ -74,10 +78,12 @@ public class PacienteAction extends ActionSupport {
 	}
 
 	@SkipValidation
-	public String editarPaciente() throws HSControllerException{
+	public String editarPaciente() throws HSControllerException {
 		Long pacienteId = this.getPaciente().getId();
 		Paciente p = pacienteDAO.retrieveById(pacienteId);
-		if (p == null) { return ERROR; }
+		if (p == null) {
+			return ERROR;
+		}
 		this.setPaciente(p);
 
 		this.setTipoDePropiedades(getTipoPropiedadDAO().retrieveAll());
@@ -95,7 +101,21 @@ public class PacienteAction extends ActionSupport {
 	 * coordenadas para guardar el Location del paciente Corregir poniendo las
 	 * coordenadas por defecto.
 	 */
-	public String salvarPaciente() throws HSControllerException{
+	public String salvarPaciente() throws HSControllerException {
+		boolean existe = false;
+
+		try {
+			existe = pacienteDAO.existe(getPaciente().getDocumento());
+		} catch (Exception e) {
+			if (e.getCause() instanceof NonUniqueResultException)
+				existe = true;
+		} finally {
+			if (existe) {
+				addFieldError("paciente.documento", "El documento ya existe en la base de datos de Pacientes");
+				return INPUT;
+			}
+		}
+
 		try {
 			this.getPaciente().setHabilitado(true);
 			this.getPaciente().setId(null);
@@ -113,7 +133,24 @@ public class PacienteAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	public String modificarPaciente() throws HSControllerException{
+	public String modificarPaciente() throws HSControllerException {
+
+		boolean existe = false;
+		try {
+			Paciente pAux = pacienteDAO.retrieveById(this.getPaciente().getId());
+			if(!pAux.getDocumento().equals(getPaciente().getDocumento())){		
+				existe = pacienteDAO.existe(getPaciente().getDocumento());
+			}
+		} catch (Exception e) {
+			if (e.getCause() instanceof NonUniqueResultException) {
+				existe = true;
+			}
+		} finally {
+			if (existe) {
+				addFieldError("paciente.documento", "El documento ya existe en la base de datos de Pacientes");
+				return INPUT;
+			}
+		}
 
 		Paciente p = pacienteDAO.retrieveById(this.getPaciente().getId());
 		new PacienteUtils().copyProperties(p, this.getPaciente());
@@ -131,82 +168,82 @@ public class PacienteAction extends ActionSupport {
 	// return this.getPaciente();
 	// }
 
-	public Paciente getPaciente(){
+	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	public void setPaciente(Paciente paciente){
+	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	public PacienteDAO getPacienteDAO(){
+	public PacienteDAO getPacienteDAO() {
 		return pacienteDAO;
 	}
 
-	public void setPacienteDAO(PacienteDAO pacienteDAO){
+	public void setPacienteDAO(PacienteDAO pacienteDAO) {
 		this.pacienteDAO = pacienteDAO;
 	}
 
-	public HistoriaSocialDAO getHistoriaSocialDAO(){
+	public HistoriaSocialDAO getHistoriaSocialDAO() {
 		return historiaSocialDAO;
 	}
 
-	public void setHistoriaSocialDAO(HistoriaSocialDAO historiaSocialDAO){
+	public void setHistoriaSocialDAO(HistoriaSocialDAO historiaSocialDAO) {
 		this.historiaSocialDAO = historiaSocialDAO;
 	}
 
-	public String getOper(){
+	public String getOper() {
 		return oper;
 	}
 
-	public void setOper(String oper){
+	public void setOper(String oper) {
 		this.oper = oper;
 	}
 
-	public String getSubmitAction(){
+	public String getSubmitAction() {
 		return submitAction;
 	}
 
-	public void setSubmitAction(String submitAction){
+	public void setSubmitAction(String submitAction) {
 		this.submitAction = submitAction;
 	}
 
-	public InstitucionDAO getInstitucionDAO(){
+	public InstitucionDAO getInstitucionDAO() {
 		return institucionDAO;
 	}
 
-	public void setInstitucionDAO(InstitucionDAO institucionDAO){
+	public void setInstitucionDAO(InstitucionDAO institucionDAO) {
 		this.institucionDAO = institucionDAO;
 	}
 
-	public List<CondicionHabitacional> getCondicionesHabitacionales(){
+	public List<CondicionHabitacional> getCondicionesHabitacionales() {
 		return condicionesHabitacionales;
 	}
 
-	public void setCondicionesHabitacionales(List<CondicionHabitacional> condicionesHabitacionales){
+	public void setCondicionesHabitacionales(List<CondicionHabitacional> condicionesHabitacionales) {
 		this.condicionesHabitacionales = condicionesHabitacionales;
 	}
 
-	public List<TipoPropiedad> getTipoDePropiedades(){
+	public List<TipoPropiedad> getTipoDePropiedades() {
 		return tipoDePropiedades;
 	}
 
-	public void setTipoDePropiedades(List<TipoPropiedad> tipoDePropiedades){
+	public void setTipoDePropiedades(List<TipoPropiedad> tipoDePropiedades) {
 		this.tipoDePropiedades = tipoDePropiedades;
 	}
 
-	public List<Institucion> getInstituciones(){
+	public List<Institucion> getInstituciones() {
 		return instituciones;
 	}
 
-	public void setInstituciones(List<Institucion> instituciones){
+	public void setInstituciones(List<Institucion> instituciones) {
 		this.instituciones = instituciones;
 	}
 
 	/**
 	 * @return the domicilioDAO
 	 */
-	public GenericDAO<Domicilio> getDomicilioDAO(){
+	public GenericDAO<Domicilio> getDomicilioDAO() {
 		return domicilioDAO;
 	}
 
@@ -214,14 +251,14 @@ public class PacienteAction extends ActionSupport {
 	 * @param domicilioDAO
 	 *            the domicilioDAO to set
 	 */
-	public void setDomicilioDAO(GenericDAO<Domicilio> domicilioDAO){
+	public void setDomicilioDAO(GenericDAO<Domicilio> domicilioDAO) {
 		this.domicilioDAO = domicilioDAO;
 	}
 
 	/**
 	 * @return the viviendaDAO
 	 */
-	public GenericDAO<Vivienda> getViviendaDAO(){
+	public GenericDAO<Vivienda> getViviendaDAO() {
 		return viviendaDAO;
 	}
 
@@ -229,14 +266,14 @@ public class PacienteAction extends ActionSupport {
 	 * @param viviendaDAO
 	 *            the viviendaDAO to set
 	 */
-	public void setViviendaDAO(GenericDAO<Vivienda> viviendaDAO){
+	public void setViviendaDAO(GenericDAO<Vivienda> viviendaDAO) {
 		this.viviendaDAO = viviendaDAO;
 	}
 
 	/**
 	 * @return the habitacionalDAO
 	 */
-	public GenericDAO<CondicionHabitacional> getHabitacionalDAO(){
+	public GenericDAO<CondicionHabitacional> getHabitacionalDAO() {
 		return habitacionalDAO;
 	}
 
@@ -244,14 +281,14 @@ public class PacienteAction extends ActionSupport {
 	 * @param habitacionalDAO
 	 *            the habitacionalDAO to set
 	 */
-	public void setHabitacionalDAO(GenericDAO<CondicionHabitacional> habitacionalDAO){
+	public void setHabitacionalDAO(GenericDAO<CondicionHabitacional> habitacionalDAO) {
 		this.habitacionalDAO = habitacionalDAO;
 	}
 
 	/**
 	 * @return the tipoPropiedadDAO
 	 */
-	public GenericDAO<TipoPropiedad> getTipoPropiedadDAO(){
+	public GenericDAO<TipoPropiedad> getTipoPropiedadDAO() {
 		return tipoPropiedadDAO;
 	}
 
@@ -259,7 +296,7 @@ public class PacienteAction extends ActionSupport {
 	 * @param tipoPropiedadDAO
 	 *            the tipoPropiedadDAO to set
 	 */
-	public void setTipoPropiedadDAO(GenericDAO<TipoPropiedad> tipoPropiedadDAO){
+	public void setTipoPropiedadDAO(GenericDAO<TipoPropiedad> tipoPropiedadDAO) {
 		this.tipoPropiedadDAO = tipoPropiedadDAO;
 	}
 

@@ -39,6 +39,10 @@ $(function(){
 <body>
 <% 
 Long idPaciente = (Long) request.getAttribute("idPaciente");
+String nombrePaciente = (String) request.getAttribute("nombrePaciente");
+String apellidoPaciente = (String) request.getAttribute("apellidoPaciente");
+String dniPaciente = (String) request.getAttribute("dniPaciente");
+
 String user = (String)session.getAttribute("user"); 
 		if (user == null){ %>
 		<jsp:forward page="/login.jsp"></jsp:forward>
@@ -56,6 +60,10 @@ String user = (String)session.getAttribute("user");
 			        <li><a href="#fragment-3"><span>Grupo Familiar</span></a></li>
 					<s:set name="jspMenu" value="menu"/>
 			    </ul>
+			<h3 class="titleImportant">
+				Paciente <%=apellidoPaciente %>, <%=nombrePaciente %> | 
+				<small> DNI: <%=dniPaciente %></small>
+			</h3>
 			<form action="" name="agregarConvivienteForm" id="formConviviente">
 				<div id="fragment-3" class="leftLabel">
 			    	
@@ -95,7 +103,16 @@ String user = (String)session.getAttribute("user");
 									tabindex="3" onkeyup="" required />
 							</div>
 						</li>
-						<li id="foli12" class="notranslate       "><label
+						<li id="foli1" class="notranslate"><label class="desc"
+							id="title1" for="Field1"> Numero de DNI </label>
+							<div>
+							<span class="errorMessage" id="errorDNI"></span>
+							<input id="documento" name="documento" type="number"
+								class="field number medium" value="" step="1" max="100000000" tabindex="1" 
+								onkeyup="" /> <br/>
+								<i>Ingrese el numero de documento <strong>sin puntos</strong>. Ejemplo: 54321012</i>
+							</div></li>						
+						<li id="foli12" class="notranslate"><label
 							class="desc" id="title12" for="Field12"> V&iacute;nculo </label>
 							<div>
 								<select id="vinculo" name="vinculo" class="field select medium"
@@ -330,6 +347,7 @@ String user = (String)session.getAttribute("user");
 			      var obraSocialVal = $("select#obraSocial").val();
 			      var ingresosVal = $("select#ingresos").val();
 			      var conviveVal = $("input#convive").val();
+			      var documentoVal = $("input#documento").val();
 // 			      var idPaciente = $("input#idPaciente").val();
 			      
 			      var dataString = 'id='+ idConv +
@@ -345,6 +363,7 @@ String user = (String)session.getAttribute("user");
 			      				   '&obraSocial.id=' + obraSocialVal +
 			      				   '&convive=' + $(".convive").is(":checked") +			      				   
 			      				   '&ingresos=' + ingresosVal +
+			      				   '&documento=' + documentoVal +
 			      				   '&familiarId=' + familiarId;
 			      
 			      $.ajax({
@@ -354,7 +373,11 @@ String user = (String)session.getAttribute("user");
 			    	  success: function() {
 			    		  $("#gridtableConviviente").trigger("reloadGrid");
 			    		  reseteo();
-			    	  } 
+			    		  $("#errorDNI").text("");
+			    	  },
+					  error: function(result){
+			    		  $("#errorDNI").text("DNI duplicado, verifique que se ingreso correctamente");
+					  }
 			      });
 			      return false;
 			  }; 			
@@ -365,7 +388,8 @@ String user = (String)session.getAttribute("user");
 			    // validate and process form here  
 			      var nombresVal = $("input#nombres").val();
 			      var familiarId = $("input#familiarId").val();
-			      var nroVal = $("input#nro").val(); 			    
+			      var nroVal = $("input#nro").val(); 
+			      var documentoVal = $("input#documento").val();
 			      var edadVal = $("input#edad").val();  
 			      var apellidoVal = $("input#queryAutocomple").val();
 			      var vinculoVal = $("select#vinculo").val();
@@ -392,15 +416,21 @@ String user = (String)session.getAttribute("user");
 			      				   '&obraSocial.id=' + obraSocialVal +
 			      				   '&convive=' + $(".convive").is(":checked") +			      				   
 			      				   '&ingresos=' + ingresosVal + 
+			      				 	'&documento=' + documentoVal + 
 			      				   '&familiarId=' + familiarId;
 			      
 			      $.ajax({
 			    	  type: "POST",  
 			    	  url: "agregarConviviente.action",  
 			    	  data: dataString,  
-			    	  success: function() {
+			    	  success: function(result) {
+			    		  reseteo();
+			    		  $("#errorDNI").text("");
 			    		  $("#gridtableConviviente").trigger("reloadGrid");
-			    	  } 
+			    	  },
+			    	  error: function(result){
+			    		  $("#errorDNI").text("DNI duplicado, verifique que se ingreso correctamente");
+			    	  }
 			      });
 			      return false;
 			  }); 
@@ -429,6 +459,7 @@ String user = (String)session.getAttribute("user");
 						      $("select#ingresos").val(conv.ingresos);
 						      $("input#convive").prop('checked', conv.convive);
 						      $("input#idConviviente").val(conv.id);
+						      $("input#documento").val(conv.documento);
 						      
 						      
 						      if($("input#convCancel").length === 0){ 
@@ -443,8 +474,10 @@ String user = (String)session.getAttribute("user");
 						      }
 						      
 						  }
+						  $("#errorDNI").text("");
 					  },
-					  error: function(){
+					  error: function(result){
+			    		  $("#errorDNI").text("DNI duplicado, verifique que se ingreso correctamente");
 						  alert("Se produjo un error al intentar editar el familiar");
 					  }
 					});
