@@ -11,7 +11,10 @@ function initForm(){
 }
 
 function disableSubmitButton() {
-	document.getElementById('saveForm').disabled = true;
+	var e = document.getElementById('saveForm');
+	if(e){
+		e.disabled = true;
+	}
 }
 
 // for radio and checkboxes, they have to be cleared manually, so they are added to the

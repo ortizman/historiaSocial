@@ -47,7 +47,7 @@ function renderActions(cellvalue, options, rowObject) {
 	
     return ("<div style=\"text-align:center\">"
             	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.edit'/>\" href=\"editarPaciente.action?paciente.id="+rowObject["id"]+"\"> <img src=\"images/16x16/Write2.png\"> </a>"
-            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.cohabitantgroup'/>\" href=\"listGrupoConviviente.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Group.png\"> </a>"
+            	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.cohabitantgroup'/>\" href=\"listGrupoConviviente.action?idPaciente="+rowObject["id"]+"&nombrePaciente="+rowObject["nombres"]+"&apellidoPaciente="+rowObject["apellidos"]+"&dniPaciente="+rowObject["documento"]+"\"> <img src=\"images/16x16/Group.png\"> </a>"
             	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recordincome'/>\" href=\"registrarIngreso.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go In.png\"> </a>" 
             	+"<a class=\"button\" title=\"<s:text name='patient.tooltip.recorddischarged'/>\" href=\"registrarAlta.action?idPaciente="+rowObject["id"]+"\"> <img src=\"images/16x16/Go Out.png\"> </a>"
 				+"<div style=\"border-right: 2px solid black; display: inline\"></div>"

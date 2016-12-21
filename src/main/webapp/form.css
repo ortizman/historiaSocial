@@ -1237,3 +1237,11 @@ form li.complex p.error {
 .rtl #errorLi * {
 	text-align: center
 }
+
+#wwgrp_paciente_paciente_documento {
+	display: inline;	
+}
+
+#wwctrl_paciente_paciente_documento{
+	display: inline;
+}

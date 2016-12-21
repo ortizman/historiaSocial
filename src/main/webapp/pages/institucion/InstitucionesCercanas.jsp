@@ -9,6 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="estilo.css" rel="StyleSheet" type="text/css" id="css"/>
 <script type="text/javascript" src="script/script.js"></script>
+<script src="script/jquery-ui.js"></script>
+
 <sj:head jqueryui="true"/>
 <sj:head locale="es" jqueryui="true" jquerytheme="redmond"/>
 <title>ABM Instituciones</title>
@@ -35,14 +37,33 @@
 					
 							<s:form action="findInstitutions">
 								<s:fielderror />
-								<s:select label="Paciente" name="id"  list="%{pacients}" listKey="id"  /> 
+								<s:hidden name="id" id="pacienteId"  /> 
+ 								
+								<s:textfield label="Paciente" name="query" id="paciente"  value="%{nombrePaciente}" />
+								 
 								<s:select label="Distancia" name="delta" list="%{map}"/> 
 								<s:submit value="buscar" />
 							</s:form>
 					</div>
 					
 			</div>
+
+			<script type="text/javascript" src="script/jquery.autocomplete.min.js"></script>
+			<script type="text/javascript">
+			$('#paciente').autocomplete({
+				serviceUrl : 'pacienteAutoComplete',
+				onSelect : function(suggestion){
+					$("#pacienteId").val(suggestion.data);
+				},
+
+				autoSelectFirst: true,
+				
+				minChars: 3,
+
+				deferRequestBy: 300
 			
+			});
+			</script>
 			<jsp:include page="../../footer.jsp"/>
 		</div>
 	<% } %>

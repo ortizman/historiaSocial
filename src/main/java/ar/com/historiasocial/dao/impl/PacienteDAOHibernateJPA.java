@@ -125,6 +125,11 @@ public class PacienteDAOHibernateJPA extends GenericDAOHibernateJPA<Paciente> im
 
 	@Override
 	public boolean existe(String dni){
+		
+		if(dni == null || dni.trim().isEmpty()){
+			return false;
+		}
+		
 		boolean exito = false;
 		try {
 			Query consulta = getEntityManager().createQuery("select p from Paciente p where p.documento=?");

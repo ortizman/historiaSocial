@@ -10,7 +10,6 @@ import org.apache.struts2.convention.annotation.Result;
 
 import ar.com.historiasocial.dao.GenericDAO;
 import ar.com.historiasocial.dao.PersonaDAO;
-import ar.com.historiasocial.entities.Conviviente;
 import ar.com.historiasocial.entities.ObraSocial;
 import ar.com.historiasocial.entities.Paginador;
 import ar.com.historiasocial.entities.Persona;
@@ -27,6 +26,10 @@ public class ListPersonasAction extends ListJQGridAction {
 	private List<Persona>			personas			= new ArrayList<Persona>();
 	private PersonaDAO				personaDAO;
 	private Long					idPaciente;
+	private String					nombrePaciente;
+	private String					apellidoPaciente;
+	private String					dniPaciente;
+
 	private Long					idConviviente;
 	private Persona				conviviente;
 
@@ -136,4 +139,27 @@ public class ListPersonasAction extends ListJQGridAction {
 		return conviviente;
 	}
 
+	public String getNombrePaciente() {
+		return nombrePaciente;
+	}
+
+	public void setNombrePaciente(String nombres) {
+		this.nombrePaciente = nombres;
+	}
+
+	public String getApellidoPaciente() {
+		return apellidoPaciente;
+	}
+
+	public void setApellidoPaciente(String apellidos) {
+		this.apellidoPaciente = apellidos;
+	}
+
+	public String getDniPaciente() {
+		return dniPaciente;
+	}
+
+	public void setDniPaciente(String documento) {
+		this.dniPaciente = documento;
+	}
 }
