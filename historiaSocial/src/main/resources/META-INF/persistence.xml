@@ -35,9 +35,9 @@
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			
-			<property name="hibernate.connection.username" value="historia" />
-			<property name="hibernate.connection.password" value="historia" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
+			<property name="hibernate.connection.username" value="b9aee57813154e" />
+			<property name="hibernate.connection.password" value="05c6441e" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/heroku_053fba011f55b95?reconnect=true" />
 			
 <!-- 			<property name="hibernate.connection.username" value="adminiyf734v" /> -->
 <!-- 			<property name="hibernate.connection.password" value="g2fhVG9-PBJG" /> -->

@@ -27,3 +27,6 @@ tmp/**/*
 
 # Locally stored "Eclipse launch configurations"
 *.launch
+
+# vscode
+.vscode/**
