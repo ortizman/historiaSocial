@@ -79,12 +79,12 @@ h1 {
 	-moz-border-radius-topright: 5px;
 	border-top-left-radius: 7px;
 	border-top-right-radius: 7px;
-	background-image: linear-gradient(bottom, #DD4814 67%, #AA4814 35%);
-	background-image: -o-linear-gradient(bottom, #DD4814 67%, #AA4814 35%);
-	background-image: -webkit-linear-gradient(bottom, #DD4814 67%, #AA4814 35%);
-	background-image: -ms-linear-gE0EEEEradient(bottom, #DD4814 67%, #AA4814 35%);
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.67, #DD4814
-		), color-stop(0.00, #AA4814));
+	background-image: linear-gradient(bottom, #104E89 67%, #1111ff 35%);
+	background-image: -o-linear-gradient(bottom, #104E89 67%, #1111ff 35%);
+	background-image: -webkit-linear-gradient(bottom, #104E89 67%, #1111ff 35%);
+	background-image: -ms-linear-gE0EEEEradient(bottom, #104E89 67%, #1111ff 35%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.67, #104E89
+		), color-stop(0.00, #1111ff));
 }
 
 #header #tituloHeader {
