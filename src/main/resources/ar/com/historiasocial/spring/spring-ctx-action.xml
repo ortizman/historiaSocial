@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byType">
+
+	<tx:annotation-driven  />
+	
+	<context:property-placeholder location="classpath:hs-runtime.properties" />
+
+	<bean id="findNearestInstitutionsAction" scope="prototype"
+		class="ar.com.historiasocial.actions.FindNearestInstitutionsAction">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="institucionDAO" ref="institucionDAO" />
+	</bean>
+
+	<bean id="newSearchAction" class="ar.com.historiasocial.actions.NewSearchAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+	</bean>
+
+	<bean id="listTipoInstitucionAction" class="ar.com.historiasocial.actions.ListTipoInstitucionAction"
+		scope="prototype">
+		<property name="institutionTypeDAO" ref="institutionTypeDAO" />
+	</bean>
+
+	<bean id="listResponsableInstitucionAction"
+		class="ar.com.historiasocial.actions.ListResponsableInstitucionAction"
+		scope="prototype">
+		<property name="responsableDAO" ref="responsableDAO" />
+	</bean>
+
+	<bean id="iniciarSesionAction" class="ar.com.historiasocial.actions.IniciarSesionAction"
+		scope="prototype">
+		<property name="profesionalDAO" ref="profesionalDAO" />
+	</bean>
+	<bean id="formModificarUsuarioConectadoAction"
+		class="ar.com.historiasocial.actions.FormModificarUsuarioConectadoAction"
+		scope="prototype">
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="especialidadDAO" ref="especialidadDAO" />
+	</bean>
+
+	<bean id="formModificarDatosPersonalesPacienteAction"
+		class="ar.com.historiasocial.actions.FormModificarDatosPersonalesPacienteAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+	</bean>
+
+
+	<bean id="cerrarSesionAction" class="ar.com.historiasocial.actions.CerrarSesionAction"
+		scope="prototype" />
+
+	<bean id="menuAction" class="ar.com.historiasocial.actions.MenuAction"
+		scope="prototype" />
+
+	<bean id="loginAction" class="ar.com.historiasocial.actions.LoginAction"
+		scope="prototype" />
+		
+	<bean id="crudPacienteAction" class="ar.com.historiasocial.actions.CRUDPacienteAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="viviendaDAO" ref="viviendaDAO" />
+		<property name="domicilioDAO" ref="domicilioDAO" />
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+	</bean>
+
+	<bean id="listHistoriaSocial" class="ar.com.historiasocial.actions.HistoriaSocialAction"
+		scope="prototype">
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+		<property name="tratamientoDAO" ref="tratamientoDAO" />
+	</bean>
+
+	<bean id="altaPacienteAction" class="ar.com.historiasocial.actions.PacienteAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="domicilioDAO" ref="domicilioDAO" />
+		<property name="viviendaDAO" ref="viviendaDAO" />
+		<property name="habitacionalDAO" ref="condicionHabitacionalDAO" />
+		<property name="tipoPropiedadDAO" ref="tipoPropiedadDAO" />
+		<property name="institucionDAO" ref="institucionDAO" />
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+	</bean>
+	<bean id="altaInstitucionAction" class="ar.com.historiasocial.actions.InstitucionAction"
+		scope="prototype">
+		<property name="institucionDAO" ref="institucionDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+		<property name="tipoInstitucionDAO" ref="tipoInstitucionDAO"></property>
+		<property name="responsableDAO" ref="responsableDAO"></property>
+	</bean>
+	<bean id="altaPracticaAction" class="ar.com.historiasocial.actions.PracticaAction"
+		scope="prototype">
+		<property name="practicaDAO" ref="practicaDAO"></property>
+		<property name="pacienteDAO" ref="pacienteDAO"></property>
+		<property name="profesionalDAO" ref="profesionalDAO"></property>
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO"></property>
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO"></property>
+	</bean>
+
+	<bean id="ingresoEgresoPacienteAction"
+		class="ar.com.historiasocial.actions.IngresoEgresoPacienteAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="diagnosticoDAO" ref="diagnosticoDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+	</bean>
+
+	<bean id="listPacientesAction" class="ar.com.historiasocial.actions.ListPacientesAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="personaDAO" ref="personaDAO" />
+	</bean>
+
+	<bean id="listProfesionalesAction" class="ar.com.historiasocial.actions.ListProfesionalesAction"
+		scope="prototype">
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="servicioDAO" ref="servicioDAO" />
+	</bean>
+
+
+	<bean id="listServicioAction" class="ar.com.historiasocial.actions.ListServicioAction"
+		scope="prototype">
+		<property name="servicioDAO" ref="servicioDAO" />
+	</bean>
+
+	<bean id="listInstitucionesAction" class="ar.com.historiasocial.actions.ListInstitucionesAction"
+		scope="prototype">
+		<property name="institucionDAO" ref="institucionDAO" />
+		<property name="tipoInstitucionDAO" ref="tipoInstitucionDAO" />
+		<property name="responsableDAO" ref="responsableDAO" />
+	</bean>
+
+	<bean id="listEspecialidadesAction" class="ar.com.historiasocial.actions.ListEspecialidadesAction"
+		scope="prototype">
+		<property name="especialidadDAO" ref="especialidadDAO" />
+	</bean>
+
+	<bean id="diagnosticoAction" class="ar.com.historiasocial.actions.DiagnosticoAction"
+		scope="prototype">
+		<property name="diagnosticoDAO" ref="diagnosticoDAO" />
+	</bean>
+
+	<bean id="listDiagnosticoAction" class="ar.com.historiasocial.actions.ListDiagnosticosAction"
+		scope="prototype">
+		<property name="diagnosticoDAO" ref="diagnosticoDAO" />
+	</bean>
+
+	<bean id="obraSocialAction" class="ar.com.historiasocial.actions.ObraSocialAction"
+		scope="prototype">
+		<property name="obraSocialDAO" ref="obraSocialDAO" />
+	</bean>
+
+	<bean id="listObraSocialAction" class="ar.com.historiasocial.actions.ListObraSocialAction"
+		scope="prototype">
+		<property name="obraSocialDAO" ref="obraSocialDAO" />
+	</bean>
+	
+	
+
+	<bean id="tipoPropiedadAction" class="ar.com.historiasocial.actions.TipoPropiedadAction"
+		scope="prototype">
+		<property name="tipoPropiedadDAO" ref="tipoPropiedadDAO" />
+	</bean>
+
+	<bean id="listTipoPropiedadAction" class="ar.com.historiasocial.actions.ListTipoPropiedadAction"
+		scope="prototype">
+		<property name="tipoPropiedadDAO" ref="tipoPropiedadDAO" />
+	</bean>
+	
+	<bean id="condicionHabitacionalAction" class="ar.com.historiasocial.actions.CondicionHabitacionalAction"
+		scope="prototype">
+		<property name="condicionHabitacionalDAO" ref="condicionHabitacionalDAO" />
+	</bean>
+
+	<bean id="listCondicionHabitacionalAction" class="ar.com.historiasocial.actions.ListCondicionHabitacionalAction"
+		scope="prototype">
+		<property name="condicionHabitacionalDAO" ref="condicionHabitacionalDAO" />
+	</bean>
+
+	<bean id="listTipoPracticasAction" class="ar.com.historiasocial.actions.ListTipoPracticasAction"
+		scope="prototype">
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+	</bean>
+
+	<bean id="listTipoProblematicasAction"
+		class="ar.com.historiasocial.actions.ListTipoProblematicasAction"
+		scope="prototype">
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+	</bean>
+
+	<bean id="listPracticasAction" class="ar.com.historiasocial.actions.ListPracticasAction"
+		scope="prototype">
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+	</bean>
+
+	<bean id="crudPracticaAction" class="ar.com.historiasocial.actions.CRUDPracticaAction"
+		scope="prototype">
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+	</bean>
+
+	<bean id="listadoAction" class="ar.com.historiasocial.actions.EstadisticaAction"
+		scope="prototype">
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+	</bean>
+
+	<bean id="estadisticaCalcularAction" class="ar.com.historiasocial.actions.EstadisticaCalcularAction"
+		scope="prototype">
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+		<property name="practicaDAO" ref="practicaDAO" />
+	</bean>
+
+	<bean id="imprimirAction" class="ar.com.historiasocial.actions.ImprimirAction"
+		scope="prototype">
+		<property name="practicaDAO" ref="practicaDAO" />
+	</bean>
+
+	<bean id="listPersonasAction" class="ar.com.historiasocial.actions.ListPersonasAction"
+		scope="prototype">
+		<property name="personaDAO" ref="personaDAO" />
+		<property name="obraSocialDAO" ref="obraSocialDAO" />
+	</bean>
+
+	<bean id="crudPersonaAction" class="ar.com.historiasocial.actions.CRUDPersonaAction"
+		scope="prototype">
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="obraSocialDAO" ref="obraSocialDAO" />
+	</bean>
+	<bean id="cargador" class="ar.com.historiasocial.bootstrap.Cargador" scope="prototype">
+		<property name="historiaSocialDAO" ref="historiaSocialDAO" />
+		<property name="pacienteDAO" ref="pacienteDAO" />
+		<property name="practicaDAO" ref="practicaDAO" />
+		<property name="profesionalDAO" ref="profesionalDAO" />
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO" />
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO" />
+		<property name="institucionDAO" ref="institucionDAO" />
+		<property name="personaDAO" ref="personaDAO" />
+		<property name="especialidadDAO" ref="especialidadDAO" />
+		<property name="servicioDAO" ref="servicioDAO" />
+		<property name="responsableDAO" ref="responsableDAO" />
+		<property name="institucionTypeDAO" ref="tipoInstitucionDAO" />
+		<property name="diagnosticoDAO" ref="diagnosticoDAO" />
+		<property name="tipoPropiedadDAO" ref="tipoPropiedadDAO" />
+		<property name="condicionHabitacionalDAO" ref="condicionHabitacionalDAO" />
+		<property name="obraSocialDAO" ref="obraSocialDAO" />
+		<property name="environment" value="${hs.environment}" /> 
+	</bean>
+
+	<!-- AGREGADO PARA PROFESIONALES -->
+	<bean id="altaProfesionalAction" class="ar.com.historiasocial.actions.ProfesionalAction"
+		scope="prototype">
+		<property name="profesionalDAO" ref="profesionalDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+		<property name="servicioDAO" ref="servicioDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA SERVICIOS -->
+	<bean id="altaServicioAction" class="ar.com.historiasocial.actions.ServicioAction"
+		scope="prototype">
+		<property name="servicioDAO" ref="servicioDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA PROBLEMATICAS -->
+	<bean id="altaProblematicaAction" class="ar.com.historiasocial.actions.ProblematicaAction"
+		scope="prototype">
+		<property name="tipoDeProblematicaDAO" ref="tipoDeProblematicaDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA ESPECIALIDADES -->
+	<bean id="altaEspecialidadAction" class="ar.com.historiasocial.actions.EspecialidadAction"
+		scope="prototype">
+		<property name="especialidadDAO" ref="especialidadDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA TIPO DE PRACTICAS -->
+	<bean id="altaTipoDePracticaAction" class="ar.com.historiasocial.actions.TipoDePracticaAction"
+		scope="prototype">
+		<property name="tipoDePracticaDAO" ref="tipoDePracticaDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA TIPO DE INSTITUCIONES -->
+	<bean id="altaTipoDeInstitucionAction"
+		class="ar.com.historiasocial.actions.TipoDeInstitucionAction"
+		scope="prototype">
+		<property name="institutionTypeDAO" ref="institutionTypeDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+	</bean>
+	<!-- AGREGADO PARA RESPONSABLES DE INSTITUCIONES -->
+	<bean id="altaResponsableInstitucionAction"
+		class="ar.com.historiasocial.actions.ResponsableInstitucionAction"
+		scope="prototype">
+		<property name="responsableDAO" ref="responsableDAO"></property>
+		<property name="historiaSocialDAO" ref="historiaSocialDAO"></property>
+	</bean>
+</beans>

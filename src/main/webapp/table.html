@@ -1,0 +1,86 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+<script>
+$('#add').click(function(){AddRow({});
+    });
+    var AddRow=function(){
+        $('#tbl:first').clone().hide().insertBefore('#tbl:first').slideDown(function(){
+            //setting all elements value as blank
+            //We can do this by a single line code  $('input',this).val(''); but this raises some cross browser issue
+            for(i=0; i<element.length; i++)
+             {
+              $.each($(this).find(element[i]), function(){     
+               switch($(this).attr('type')) {
+                case 'text':
+                case 'select-one':
+                case 'textarea':
+                case 'hidden':
+                case 'password':
+                $(this).val('');
+                break;
+                case 'checkbox':
+                case 'radio':
+                 $(this).attr('checked',false); //or make it true if you want 
+                break;
+               }
+          });
+         }
+        });
+    }
+</script>
+</head>
+<body>
+<table width="100%" id="tbl">
+         <thead>
+            <tr>
+             <td class="tdclass" width="50%" align="left">
+              Antecedentes
+             </td>
+             <td class="tdclass" width="17%" align="left">
+              Consecuencias
+             </td>
+             <td class="tdclass" width="10%" align="left">
+              tiempo 
+             </td>
+             <td class="tdclass" width="10%" align="left">
+                consistencia
+             </td>
+             <td class="tdclass" width="2%" align="right">
+               <img src="images/plus16.gif" onClick="AddRow();" style="cursor:pointer " title="Add" id="add">
+             </td>
+            </tr>
+         </thead>
+    <tbody>
+     <input type="hidden" value="1" id="hsb">
+       <tr id="tr1">
+          <td colspan="5">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                 <td width="50%">
+                   <input type="text" class="input" name="ata[]" id="ata1" value="" size="80" maxlength="100"/>
+                  </td>
+                  <td width="17%">
+                   <input type="text" class="input" name="ca[]" id="ca1" value="" size="25" maxlength="100"/>
+                   </td>
+                   <td width="10%">
+                     <select name="atc[]" class="input" id="atc1" >
+                      <option value="Sooner" >Sooner</option>
+                      <option value="Later" >Later</option>
+                     </select>
+                    </td>
+                    <td width="10%">
+                     <select name="aca[]" class="input" id="aca1" >
+                      <option value="Certain" >Certain</option>
+                      <option value="Uncertain" >Uncertain</option>
+                     </select>
+                    </td>
+                   </tr>
+                 </table>
+                </td>
+              </tr>
+            </tbody>
+</table>
+ </body>
+</html>

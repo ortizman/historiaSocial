@@ -1,0 +1,58 @@
+<ehcache updateCheck="false">
+ 
+    <diskStore path="java.io.tmpdir" />
+
+    <defaultCache maxElementsInMemory="10000" eternal="false"
+        statistics="true" timeToIdleSeconds="120" timeToLiveSeconds="120"
+        overflowToDisk="true" diskPersistent="false" 
+        diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU" />
+     
+	 <cache
+	    name="ar.com.historiasocial.entities.Paciente"
+	    maxEntriesLocalHeap="1000"
+	    eternal="false"
+	    timeToIdleSeconds="300"
+	    timeToLiveSeconds="600"
+	    
+	 />
+	           
+    <cache name="ar.com.historiasocial.entities.Conviviente"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.Domicilio"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.Especialidad"
+           maxElementsInMemory="100"/>
+    <cache name="ar.com.historiasocial.entities.HistoriaClinica"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.HistoriaSocial"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.Institucion"
+           maxElementsInMemory="1000"/>                                 
+    <cache name="ar.com.historiasocial.entities.InstitutionResponsible"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.InstitutionType"
+           maxElementsInMemory="1000"/>    
+    <cache name="ar.com.historiasocial.entities.Location"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.Persona"
+           maxElementsInMemory="1000"/>    
+    <cache name="ar.com.historiasocial.entities.Practica"
+           maxElementsInMemory="1000"/>
+           
+       <cache name="ar.com.historiasocial.entities.Tratamiento"
+           maxElementsInMemory="1000"/>
+           
+    <cache name="ar.com.historiasocial.entities.Profesional"
+           maxElementsInMemory="1000"/>
+    <cache name="ar.com.historiasocial.entities.Servicio"
+           maxElementsInMemory="500"/>      
+    <cache name="ar.com.historiasocial.entities.TipoDePractica"
+           maxElementsInMemory="100"/>
+    <cache name="ar.com.historiasocial.entities.CondicionHabitacional"
+           maxElementsInMemory="100"/>
+    <cache name="ar.com.historiasocial.entities.Vinculo"
+           maxElementsInMemory="100"/>  
+    <cache name="ar.com.historiasocial.entities.Vivienda"
+           maxElementsInMemory="1000"/>
+
+</ehcache>

@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd" >
+<struts>
+
+	<constant name="struts.convention.result.path" value="/" /> <!-- Esta constante la seteo para que los el plugin de junit no logue errores -->
+	<package name="default" namespace="/"
+		extends="struts-default, json-default">
+
+		<interceptors>
+			<!-- Este interceptor se hice para transformar los datos que envia JQGrid 
+				en algo que entienda JPQL -->
+			<interceptor name="mylogging"
+				class="ar.com.historiasocial.actions.interceptors.JQGridSearchInterceptor">
+			</interceptor>
+			<interceptor name="securityUserAccess"
+				class="ar.com.historiasocial.actions.interceptors.SecurityUserAccessInterceptor">
+			</interceptor>
+			<interceptor name="securityDirectorAccess"
+				class="ar.com.historiasocial.actions.interceptors.SecurityDirectorAccessInterceptor">
+			</interceptor>
+
+			<interceptor-stack name="secureStack">
+				<interceptor-ref name="securityUserAccess" />
+				<interceptor-ref name="securityDirectorAccess" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+
+			<interceptor-stack name="userStack">
+				<interceptor-ref name="securityUserAccess" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="secureStack" />
+
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="accessdenied">/accessdenied.jsp</result>
+		</global-results>
+
+
+		<!-- ===================== Busqueda de Instituciones Cercanas ===================== -->
+		<action name="findInstitutions" class="findNearestInstitutionsAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/findInstitutionsResults.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		<action name="newSearch" class="newSearchAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/InstitucionesCercanas.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="institutionTypeIndex" method="preparar"
+			class="listTipoInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmTipoInstitucion.jsp
+			</result>
+		</action>
+		<action name="responsableInstitucion" method="preparar"
+			class="listResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmResponsableInstitucion.jsp
+			</result>
+		</action><!--Fin Búsqueda de instituciones cercanas -->
+
+		<!--Inicio mapeos de manejo de sessión -->
+		<action name="iniciarSesion" class="iniciarSesionAction">
+			<interceptor-ref name="defaultStack" />
+			<result name="success">/inicio.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="conectado">/inicio.jsp</result>
+		</action>
+		<action name="cerrarSesion" class="cerrarSesionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/login.jsp</result>
+		</action>
+		<action name="menu" class="menuAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/inicio.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+		<action name="login" class="loginAction">
+			<interceptor-ref name="defaultStack" />
+			<result name="success">/login.jsp</result>
+			<result name="input">/inicio.jsp</result>
+		</action>
+		<!--Fin mapeos de manejo de sessión --><!--Menú -->
+
+
+		<!-- Inicio Mapeos de los actions relacionados a la historia social del paciente -->
+		<action name="historiaSocial" method="obtenerHistoriaSocial"
+			class="listHistoriaSocial">
+			<result name="success">/pages/paciente/historiaSocial.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+
+
+		<!-- Inicio Mapeos de los actions relacionados al manejo de Pacientes -->
+		<action name="creacionPaciente" method="creacionPaciente"
+			class="altaPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formCreacionPaciente.jsp</result>
+			<result name="input">/pages/paciente/formCreacionPaciente.jsp</result>
+			<result name="error">/pages/paciente/formCreacionPaciente.jsp</result>
+		</action>
+		<action name="visualizarPaciente" method="visualizarPaciente"
+			class="altaPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formCreacionPaciente.jsp</result>
+		</action>
+		<action name="editarPaciente" method="editarPaciente" class="altaPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formCreacionPaciente.jsp</result>
+			<result name="input">/pages/paciente/formCreacionPaciente.jsp</result>
+			<result name="error">/pages/paciente/formCreacionPaciente.jsp</result>
+		</action>
+		<action name="salvarPaciente" method="salvarPaciente" class="altaPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp</result>
+			<result name="input">/pages/paciente/formCreacionPaciente.jsp</result>
+		</action>
+		<action name="modificarPaciente" method="modificarPaciente"
+			class="altaPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp</result>
+			<result name="input">/pages/paciente/formCreacionPaciente.jsp</result>
+		</action>
+
+		<action name="crudPaciente" class="crudPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+
+		<action name="abmPacientes" method="preparar" class="listPacientesAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+		<action name="registrarAlta" method="registrarAlta"
+			class="ingresoEgresoPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formRegistrarAltaPaciente.jsp
+			</result>
+			<result name="input">/pages/paciente/formRegistrarAltaPaciente.jsp
+			</result>
+			<result name="error">/pages/paciente/error.jsp</result>
+			<result name="NoFueIngresado">/pages/paciente/error-pacienteNoIngresado.jsp</result>
+		</action>
+
+		<action name="registrarIngreso" method="registrarIngreso"
+			class="ingresoEgresoPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formRegistrarIngresoPaciente.jsp
+			</result>
+			<result name="input">/pages/paciente/formRegistrarIngresoPaciente.jsp
+			</result>
+			<result name="editar_tratamiento">/pages/paciente/formEditarIngresoPaciente.jsp
+			</result>
+			<result name="error">/pages/paciente/error.jsp</result>
+		</action>
+
+		<action name="editarIngreso" method="editarIngreso"
+			class="ingresoEgresoPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp</result>
+			<result name="input">/pages/paciente/formRegistrarIngresoPaciente.jsp
+			</result>
+			<result name="error">/pages/paciente/error.jsp</result>
+		</action>
+
+		<action name="saveIngreso" method="saveIngreso" class="ingresoEgresoPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/paciente/formRegistrarIngresoPaciente.jsp
+			</result>
+			<result name="input">/pages/paciente/formRegistrarIngresoPaciente.jsp
+			</result>
+			<result name="error">/pages/paciente/error.jsp</result>
+		</action>
+
+		<action name="saveAlta" method="saveAlta" class="ingresoEgresoPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/abmPacientes.jsp
+			</result>
+			<result name="input">/pages/paciente/formRegistrarAltaPaciente.jsp
+			</result>
+			<result name="error">/pages/paciente/error.jsp</result>
+		</action>
+		<!-- Fin Mapeos de los actions relacionados al manejo de Pacientes -->
+		
+		<!--Inicio Mapeos de los actions relacionados al manejo de Profesionales -->
+		<!-- AGREGADOS CAMBIO DE VISTA -->
+		<action name="creacionProfesional" method="creacionProfesional"
+			class="altaProfesionalAction">
+			<result name="success">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+			<result name="input">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+			<result name="error">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+		</action>
+		<action name="editarProfesional" method="editarProfesional"
+			class="altaProfesionalAction">
+			<result name="success">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+			<result name="input">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+			<result name="error">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+		</action>
+		<action name="salvarProfesional" method="salvarProfesional"
+			class="altaProfesionalAction">
+			<result name="success">/pages/profesional/abmProfesionales.jsp</result>
+			<result name="input">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+		</action>
+		<action name="modificarProfesional" method="modificarProfesional"
+			class="altaProfesionalAction">
+			<result name="success">/pages/profesional/abmProfesionales.jsp</result>
+			<result name="input">/pages/profesional/formCreacionProfesional.jsp
+			</result>
+		</action>
+		<action name="abmProfesionales" method="preparar"
+			class="listProfesionalesAction">
+			<result name="success">/pages/profesional/abmProfesionales.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="crudProfesional" class="curdProfesionalAction">
+			<result name="success">/pages/profesional/abmProfesionales.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="eliminarProfesional" method="eliminarProfesional"
+			class="altaProfesionalAction">
+			<result name="success">/pages/profesional/abmProfesionales.jsp</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Profesionales -->
+
+		<!-- AGREGADOS DE VISTA -->
+		<action name="creacionServicio" method="creacionServicio"
+			class="altaServicioAction">
+			<result name="success">/pages/profesional/formCreacionServicio.jsp
+			</result>
+			<result name="input">/pages/profesional/formCreacionServicio.jsp
+			</result>
+			<result name="error">/pages/profesional/formCreacionServicio.jsp
+			</result>
+		</action>
+		<action name="editarServicio" method="editarServicio" class="altaServicioAction">
+			<result name="success">/pages/profesional/formCreacionServicio.jsp
+			</result>
+			<result name="input">/pages/profesional/formCreacionServicio.jsp
+			</result>
+			<result name="error">/pages/profesional/formCreacionServicio.jsp
+			</result>
+		</action>
+		<action name="salvarServicio" method="salvarServicio" class="altaServicioAction">
+			<result name="success">/pages/profesional/abmServicios.jsp</result>
+			<result name="input">/pages/profesional/formCreacionServicio.jsp
+			</result>
+		</action>
+		<action name="modificarServicio" method="modificarServicio"
+			class="altaServicioAction">
+			<result name="success">/pages/profesional/abmServicios.jsp</result>
+			<result name="input">/pages/profesional/formCreacionServicio.jsp
+			</result>
+		</action>
+		<action name="eliminarServicio" method="eliminarServicio"
+			class="altaServicioAction">
+			<result name="success">/pages/profesional/abmServicios.jsp</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Servicios -->
+
+		<!--Inicio Mapeos Diagnosticos -->
+		<action name="creacionDiagnostico" method="creacionDiagnostico"
+			class="diagnosticoAction">
+			<result name="success">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+			<result name="input">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+			<result name="error">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+		</action>
+		<action name="editarDiagnostico" method="editarDiagnostico"
+			class="diagnosticoAction">
+			<result name="success">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+			<result name="input">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+			<result name="error">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+		</action>
+		<action name="salvarDiagnostico" method="salvarDiagnostico"
+			class="diagnosticoAction">
+			<result name="success">/pages/diagnostico/abmDiagnostico.jsp</result>
+			<result name="input">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+		</action>
+		<action name="modificarDiagnostico" method="modificarDiagnostico"
+			class="diagnosticoAction">
+			<result name="success">/pages/diagnostico/abmDiagnostico.jsp</result>
+			<result name="input">/pages/diagnostico/formCreacionDiagnostico.jsp
+			</result>
+		</action>
+		<action name="eliminarDiagnostico" method="eliminarDiagnostico"
+			class="diagnosticoAction">
+			<result name="success">/pages/diagnostico/abmDiagnostico.jsp</result>
+		</action>
+		<!--Fin Mapeos Diagnosticos -->
+
+		<!--Inicio Mapeos Obra Social -->
+		<action name="creacionObraSocial" method="creacionObraSocial"
+			class="obraSocialAction">
+			<result name="success">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+			<result name="input">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+			<result name="error">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+		</action>
+		<action name="editarObraSocial" method="editarObraSocial"
+			class="obraSocialAction">
+			<result name="success">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+			<result name="input">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+			<result name="error">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+		</action>
+		<action name="salvarObraSocial" method="salvarObraSocial"
+			class="obraSocialAction">
+			<result name="success">/pages/obraSocial/abmObraSocial.jsp</result>
+			<result name="input">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+		</action>
+		<action name="modificarObraSocial" method="modificarObraSocial"
+			class="obraSocialAction">
+			<result name="success">/pages/obraSocial/abmObraSocial.jsp</result>
+			<result name="input">/pages/obraSocial/formCreacionObraSocial.jsp
+			</result>
+		</action>
+		<action name="eliminarObraSocial" method="eliminarObraSocial"
+			class="obraSocialAction">
+			<result name="success">/pages/obraSocial/abmObraSocial.jsp</result>
+		</action>
+		<!--Fin Mapeos Obra Social -->
+
+
+		<!--Inicio Mapeos tipo de propiedad -->
+		<action name="creacionTipoPropiedad" method="creacionTipoPropiedad"
+			class="tipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+			<result name="input">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+			<result name="error">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+		</action>
+		<action name="editarTipoPropiedad" method="editarTipoPropiedad"
+			class="tipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+			<result name="input">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+			<result name="error">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+		</action>
+		<action name="salvarTipoPropiedad" method="salvarTipoPropiedad"
+			class="tipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/abmTipoPropiedad.jsp</result>
+			<result name="input">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+		</action>
+		<action name="modificarTipoPropiedad" method="modificarTipoPropiedad"
+			class="tipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/abmTipoPropiedad.jsp</result>
+			<result name="input">/pages/tipoPropiedad/formCreacionTipoPropiedad.jsp
+			</result>
+		</action>
+		<action name="eliminarTipoPropiedad" method="eliminarTipoPropiedad"
+			class="tipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/abmTipoPropiedad.jsp</result>
+		</action>
+		<!--Fin Mapeos tipos de propiedad -->
+
+		<!--Inicio Mapeos condiciones habitacionales -->
+		<action name="creacionCondicionHabitacional" method="creacionCondicionHabitacional"
+			class="condicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+			<result name="input">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+			<result name="error">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+		</action>
+		<action name="editarCondicionHabitacional" method="editarCondicionHabitacional"
+			class="condicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+			<result name="input">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+			<result name="error">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+		</action>
+		<action name="salvarCondicionHabitacional" method="salvarCondicionHabitacional"
+			class="condicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/abmCondicionHabitacional.jsp</result>
+			<result name="input">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+		</action>
+		<action name="modificarCondicionHabitacional" method="modificarCondicionHabitacional"
+			class="condicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/abmCondicionHabitacional.jsp</result>
+			<result name="input">/pages/condicionHabitacional/formCreacionCondicionHabitacional.jsp
+			</result>
+		</action>
+		<action name="eliminarCondicionHabitacional" method="eliminarCondicionHabitacional"
+			class="condicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/abmCondicionHabitacional.jsp</result>
+		</action>
+		<!--Fin Mapeos condiciones habitacionales -->
+
+		<!--Inicio Mapeos de los actions relacionados al manejo de Instituciones -->
+		<action name="creacionInstitucion" method="creacionInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+		</action>
+		<action name="visualizarInstitucion" method="visualizarInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+		</action>
+		<action name="editarInstitucion" method="editarInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+		</action>
+		<action name="salvarInstitucion" method="salvarInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmInstituciones.jsp</result>
+			<result name="input">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+		</action>
+		<action name="modificarInstitucion" method="modificarInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmInstituciones.jsp</result>
+			<result name="input">/pages/institucion/formCreacionInstitucion.jsp
+			</result>
+		</action>
+
+
+		<action name="abmInstituciones" method="preparar"
+			class="listInstitucionesAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmInstituciones.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="crudInstitucion" class="crudInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmInstituciones.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+
+		<action name="eliminarInstitucion" method="eliminarInstitucion"
+			class="altaInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmInstituciones.jsp</result>
+		</action>
+		<!-- Tipos de instituciones -->
+		<action name="institutionTypeIndex" method="preparar"
+			class="listTipoInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmTipoInstitucion.jsp
+			</result>
+		</action>
+		<action name="creacionTipoDeInstitucion" method="creacionTipoDeInstitucion"
+			class="altaTipoDeInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+		</action>
+		<action name="editarTipoDeInstitucion" method="editarTipoDeInstitucion"
+			class="altaTipoDeInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+		</action>
+		<action name="salvarTipoDeInstitucion" method="salvarTipoDeInstitucion"
+			class="altaTipoDeInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmTipoInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+		</action>
+		<action name="modificarTipoDeInstitucion" method="modificarTipoDeInstitucion"
+			class="altaTipoDeInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmTipoInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionTipoDeInstitucion.jsp
+			</result>
+		</action>
+		<action name="eliminarTipoDeInstitucion" method="eliminarTipoDeInstitucion"
+			class="altaTipoDeInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmTipoInstitucion.jsp
+			</result>
+		</action>
+		<!-- Responsables de instituciones -->
+		<action name="responsableInstitucion" method="preparar"
+			class="listResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmResponsableInstitucion.jsp
+			</result>
+		</action>
+		<action name="creacionResponsableInstitucion" method="creacionResponsableInstitucion"
+			class="altaResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+		</action>
+		<action name="editarResponsableInstitucion" method="editarResponsableInstitucion"
+			class="altaResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+			<result name="error">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+		</action>
+		<action name="salvarResponsableInstitucion" method="salvarResponsableInstitucion"
+			class="altaResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmResponsableInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+		</action>
+		<action name="modificarResponsableInstitucion" method="modificarResponsableInstitucion"
+			class="altaResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmResponsableInstitucion.jsp
+			</result>
+			<result name="input">/pages/institucion/formCreacionResponsableInstitucion.jsp
+			</result>
+		</action>
+		<action name="eliminarResponsableInstitucion" method="eliminarResponsableInstitucion"
+			class="altaResponsableInstitucionAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/abmResponsableInstitucion.jsp
+			</result>
+		</action>
+		
+		<!-- Busqueda de Instituciones Cercanas -->
+		<action name="findInstitutions" class="findNearestInstitutionsAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/findInstitutionsResults.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="newSearch" class="newSearchAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/institucion/InstitucionesCercanas.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Instituciones -->
+		
+		<!--Inicio Mapeos de los actions relacionados al manejo de Convivientes -->
+		<action name="listGrupoConviviente" method="listGrupoConviviente"
+			class="listPersonasAction">
+			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+		<action name="agregarConviviente" method="salvarConviviente"
+			class="crudPersonaAction">
+			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error" type="json">
+				<param name="statusCode">400</param>
+				<param name="errorCode">10001</param>
+				<param name="excludeProperties">^pacientes</param>
+			</result>
+		</action>
+		
+		<action name="editConviviente" method="editarConviviente"
+			class="crudPersonaAction">
+			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error" type="json">
+				<param name="statusCode">400</param>
+				<param name="errorCode">10001</param>
+				<param name="excludeProperties">^pacientes</param>
+			</result>		</action>		
+
+		<action name="crudConviviente" method="operConviviente" class="crudPersonaAction">
+			<result name="success">/pages/paciente/formGrupoConviviente.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/pages/paciente/formGrupoConviviente.jsp</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Convivientes -->
+
+		<!-- AGREGADOS DE VISTA -->
+		<action name="creacionEspecialidad" method="creacionEspecialidad"
+			class="altaEspecialidadAction">
+			<result name="success">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+			<result name="input">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+			<result name="error">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+		</action>
+		<action name="editarEspecialidad" method="editarEspecialidad"
+			class="altaEspecialidadAction">
+			<result name="success">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+			<result name="input">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+			<result name="error">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+		</action>
+		<action name="salvarEspecialidad" method="salvarEspecialidad"
+			class="altaEspecialidadAction">
+			<result name="success">/pages/especialidad/abmEspecialidades.jsp
+			</result>
+			<result name="input">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+		</action>
+		<action name="modificarEspecialidad" method="modificarEspecialidad"
+			class="altaEspecialidadAction">
+			<result name="success">/pages/especialidad/abmEspecialidades.jsp
+			</result>
+			<result name="input">/pages/especialidad/formCreacionEspecialidad.jsp
+			</result>
+		</action>
+		<action name="eliminarEspecialidad" method="eliminarEspecialidad"
+			class="altaEspecialidadAction">
+			<result name="success">/pages/especialidad/abmEspecialidades.jsp
+			</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Especialidades -->
+		
+		<!--Inicio Mapeos de los actions relacionados al manejo de Prácticas -->
+		<action name="creacionPractica" method="creacionPractica"
+			class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionPractica.jsp</result>
+			<result name="input">/pages/practica/formCreacionPractica.jsp</result>
+			<result name="error">/pages/practica/formCreacionPractica.jsp</result>
+		</action>
+		<action name="visualizarPractica" method="visualizarPractica"
+			class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionPractica.jsp</result>
+		</action>
+		<action name="editarPractica" method="editarPractica" class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionPractica.jsp</result>
+			<result name="input">/pages/practica/formCreacionPractica.jsp</result>
+			<result name="error">/pages/practica/formCreacionPractica.jsp</result>
+		</action>
+		<action name="salvarPractica" method="salvarPractica" class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionPractica.jsp</result>
+			<result name="input">/pages/practica/formCreacionPractica.jsp</result>
+		</action>
+		<action name="modificarPractica" method="modificarPractica"
+			class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+			<result name="input">/pages/practica/formCreacionPractica.jsp</result>
+		</action>
+		<action name="abmPracticas" method="preparar" class="listPracticasAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="eliminarPractica" method="eliminarPractica"
+			class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+		</action>
+		<action name="crudPracticas" class="crudPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+
+		<!-- Mapeo de tipos de prácticas -->
+		<action name="abmTipoPracticas" method="preparar"
+			class="listTipoPracticasAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmTipoPracticas.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+		<action name="creacionTipoDePractica" method="creacionTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+			<result name="input">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+			<result name="error">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+		</action>
+		<action name="visualizarTipoDePractica" method="visualizarTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+		</action>
+		<action name="editarTipoDePractica" method="editarTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+			<result name="input">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+			<result name="error">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+		</action>
+		<action name="salvarTipoDePractica" method="salvarTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmTipoPracticas.jsp</result>
+			<result name="input">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+		</action>
+		<action name="modificarTipoDePractica" method="modificarTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmTipoPracticas.jsp</result>
+			<result name="input">/pages/practica/formCreacionTipoDePractica.jsp
+			</result>
+		</action>
+		<action name="eliminarTipoDePractica" method="eliminarTipoDePractica"
+			class="altaTipoDePracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmTipoPracticas.jsp</result>
+		</action>
+		<action name="abmPracticas" method="preparar" class="listPracticasAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="crudPracticas" class="crudPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="eliminarPractica" method="eliminarPractica"
+			class="altaPracticaAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/pages/practica/abmPracticas.jsp</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Prácticas -->
+	
+		<action name="formModificarUsuarioConectado" class="formModificarUsuarioConectadoAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">modificarUsuarioConectado.jsp</result>
+		</action>
+
+		<action name="modificarUsuarioConectado" class="formModificarDatosPersonalesPacienteAction">
+			<interceptor-ref name="userStack" />
+			<result name="success">/login.jsp</result>
+		</action>
+		
+	
+		<!--Inicio Mapeos de los actions relacionados al manejo de Problemáticas -->
+
+		<!-- AGREGADOS DE VISTA -->
+		<action name="creacionProblematica" method="creacionProblematica"
+			class="altaProblematicaAction">
+			<result name="success">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+			<result name="input">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+			<result name="error">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+		</action>
+		<action name="editarProblematica" method="editarProblematica"
+			class="altaProblematicaAction">
+			<result name="success">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+			<result name="input">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+			<result name="error">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+		</action>
+		<action name="salvarProblematica" method="salvarProblematica"
+			class="altaProblematicaAction">
+			<result name="success">/pages/problematica/abmTipoProblematicas.jsp
+			</result>
+			<result name="input">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+		</action>
+		<action name="modificarProblematica" method="modificarProblematica"
+			class="altaProblematicaAction">
+			<result name="success">/pages/problematica/abmTipoProblematicas.jsp
+			</result>
+			<result name="input">/pages/problematica/formCreacionProblematica.jsp
+			</result>
+		</action>
+		<action name="eliminarProblematica" method="eliminarProblematica"
+			class="altaProblematicaAction">
+			<result name="success">/pages/problematica/abmTipoProblematicas.jsp
+			</result>
+		</action>
+		<!--Fin Mapeos de los actions relacionados al manejo de Problemáticas -->
+		
+		<!--Listado -->
+		<action name="listado" method="preparar" class="listadoAction">
+			<result name="success">/listado.jsp</result>
+			<result name="input">/listado.jsp</result>
+		</action>
+		
+		<!--Estadísticas -->
+		<action name="estadisticaCalcular" class="estadisticaCalcularAction">
+			<result name="success">/estadisticas.jsp</result>
+			<result name="input">/estadisticas.jsp</result>
+		</action>
+		
+		<!--Imprimir -->
+		<action name="imprimir" class="imprimirAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/pdf</param>
+				<param name="inputName">fileStream</param>
+				<param name="contentDisposition">attachment;filename="document.pdf"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+
+		<action name="abmServicios" method="preparar" class="listServicioAction">
+			<result name="success">/pages/profesional/abmServicios.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmDiagnostico" method="preparar" class="listDiagnosticoAction">
+			<result name="success">/pages/diagnostico/abmDiagnostico.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmObraSocial" method="preparar" class="listObraSocialAction">
+			<result name="success">/pages/obraSocial/abmObraSocial.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmTipoPropiedad" method="preparar"
+			class="listTipoPropiedadAction">
+			<result name="success">/pages/tipoPropiedad/abmTipoPropiedad.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmCondicionHabitacional" method="preparar"
+			class="listCondicionHabitacionalAction">
+			<result name="success">/pages/condicionHabitacional/abmCondicionHabitacional.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmTipoProblematicas" method="preparar"
+			class="listTipoProblematicasAction">
+			<result name="success">/pages/problematica/abmTipoProblematicas.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="abmEspecialidades" method="preparar"
+			class="listEspecialidadesAction">
+			<result name="success">pages/especialidad/abmEspecialidades.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+	</package>
+</struts>
