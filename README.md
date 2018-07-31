@@ -24,11 +24,11 @@ Persistencia
 Se utiliza JPA para la persistencia. En el archivo de `persistence.xml` se puede configurar todas las propiedaes respecto al motor de base de datos que se utilice.
 ** Importante: **
 	Como minimo requiere cambiar las propiedaes (usuario, password y url de conexion a la BBDD):
-	
-			<property name="hibernate.connection.username" value="historia" />
-			<property name="hibernate.connection.password" value="historia" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
-
+```xml
+	<property name="hibernate.connection.username" value="historia" />
+	<property name="hibernate.connection.password" value="historia" />
+	<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
+```
 
 
 Build y Deploy del proyecto
@@ -46,11 +46,13 @@ Build y Deploy del proyecto
 
 1. Tener instalado Docker y Docker Compose 1.21+
 1. Cambiar el persistence.xml
-
-			<property name="hibernate.connection.username" value="historia" />
-			<property name="hibernate.connection.password" value="historia" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/historiaSocial" />
 			
+```xml
+	<property name="hibernate.connection.username" value="hsocial" />
+	<property name="hibernate.connection.password" value="hsocial!123" />
+	<property name="hibernate.connection.url" value="jdbc:mysql://mysql-db/historiaSocialChata?reconnect=true" />
+```
+
 1. Sobre el root del proyecto se encuentra el docker-compose que tiene 3 servicios:
 	* tomcat: Imagen docker con tomcat 8.5. El WAR de la app se copia dentro de la imagen
 	* mysql-db: Mysql 5.7. **IMPORTANTE:** Cambiar el volumen donde se almacenan los datos de la base dentro de docker-compose.yml 
